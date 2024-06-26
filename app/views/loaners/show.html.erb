@@ -1,0 +1,33 @@
+<div class="container-responsive px-4 pt-4">
+  <div class="box" >
+    <h1>Loaner Details</h1>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Loaner ID</th>
+          <td><%= @loaner.loaner_id %></td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td><%= @loaner.status.capitalize %></td>
+        </tr>
+        <tr>
+          <th>Asset Tag</th>
+          <td><%= @loaner.asset_tag %></td>
+        </tr>
+        <tr>
+          <th>Serial Number</th>
+          <td><%= @loaner.serial_number %></td>
+        </tr>
+        <tr>
+          <th>Loan Count</th>
+          <td><%= @loaner.loan_count %></td>
+        </tr>
+        <tr>
+          <th>Created At</th>
+          <td><%= @loaner.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -26,8 +26,19 @@ Rails.application.routes.draw do
   get 'loans/pending'
   get 'loans/out'
 
-
+  get 'loaners' => 'loaners#list'
+  get 'loaners/list', to: redirect('loaners')
 
   # Defines the checkout path route ("/checkout")
   get "scanner" => "main#scanner"
+
+  resources :loaners do
+    member do
+      patch 'loan'
+      patch 'return'
+      patch 'enable'
+      # Add other member routes as needed
+    end
+  end
+
 end

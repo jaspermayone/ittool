@@ -39,8 +39,9 @@ class Borrower < ApplicationRecord
       grade_level = 9
     elsif tmp_grade_level.abs == 5
       grade_level = 8
+    # add grade 7
     else
-      grade_level = 0
+      grade_level = 0 # staff (should not error)
     end
 
     grade_level

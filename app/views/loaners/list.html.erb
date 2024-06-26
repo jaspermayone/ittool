@@ -1,0 +1,109 @@
+<div class="container-responsive px-3 pt-3">
+  <div class="box">
+    <div class="row mb-3">
+      <div class="col">
+        <h1 class="mb-0">Loaners</h1>
+      </div>
+      <div class="col-auto">
+        <div class="form-group mb-0">
+          <label for="status-filter" class="mr-2">Filter by Status:</label>
+          <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Loaner ID</th>
+            <th>Status</th>
+            <th>Asset Tag</th>
+            <th>Serial Number</th>
+            <th>Loan Count</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @loaners.each do |loaner| %>
+            <tr>
+              <td><%= loaner.loaner_id %></td>
+              <td><%= loaner.status.capitalize %></td>
+              <td><%= loaner.asset_tag %></td>
+              <td><%= loaner.serial_number %></td>
+              <td><%= loaner.loan_count %></td>
+              <td>
+                <% if loaner.available? %>
+                  <%= link_to "Check Out", loan_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-primary btn-sm" %>
+                <% elsif loaner.loaned? %>
+                  <%= link_to "Check In", return_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-warning btn-sm" %>
+                <% elsif loaner.disabled? || loaner.maintenance? %>
+                  <%= link_to "Mark as Available", enable_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-success btn-sm" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-responsive {
+     height: 75vh;
+     overflow-y: auto;
+   }
+
+   /* Define your status colors here as needed */
+   .available {
+     background-color: #d4edda; /* Light green */
+   }
+
+   .loaned {
+     background-color: #fff3cd; /* Light yellow */
+   }
+
+   .disabled {
+     background-color: #f8d7da; /* Light red */
+   }
+
+   .maintenance {
+     background-color: #cce5ff; /* Light blue */
+   }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterSelect = document.getElementById('status-filter');
+    const rows = document.querySelectorAll('#loaners-table tbody tr');
+
+    filterSelect.addEventListener('change', function() {
+      const selectedStatus = filterSelect.value;
+
+      rows.forEach(row => {
+        const status = row.classList[0]; // Get the first class which represents status
+        if (selectedStatus === 'all' || selectedStatus === status) {
+          row.style.display = ''; // Show the row
+        } else {
+          row.style.display = 'none'; // Hide the row
+        }
+      });
+    });
+
+    // Function to apply status-based coloring
+    function applyStatusColors() {
+      rows.forEach(row => {
+        const status = row.classList[0]; // Get the first class which represents status
+        row.classList.remove('available', 'loaned', 'disabled', 'maintenance'); // Remove all status classes
+        row.classList.add(status); // Add the current status class
+      });
+    }
+
+    // Initial call to apply status colors on page load
+    applyStatusColors();
+
+    // Reapply status colors when filter changes
+    filterSelect.addEventListener('change', applyStatusColors);
+  });
+</script>
