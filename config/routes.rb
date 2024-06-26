@@ -5,6 +5,29 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  namespace :admin do
+    if Rails.env.development?
+      mount LetterOpenerWeb::Engine, at: "/letter_opener"
+    end
+
+    mount MissionControl::Jobs::Engine, at: "/jobs"
+    mount Audits1984::Engine => "/console"
+
+  end
+
+
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "main#index"
+
+  get 'loans', to: 'loans#router'
+  post 'loans', to: 'loans#create'
+  get 'loans/borrow', to: 'loans#new'
+  get 'loans/list'
+  get 'loans/pending'
+  get 'loans/out'
+
+
+
+  # Defines the checkout path route ("/checkout")
+  get "scanner" => "main#scanner"
 end

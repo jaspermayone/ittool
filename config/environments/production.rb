@@ -37,6 +37,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
+  # TODO: Change this to an S3 bucket or similar for production.
   config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain.
@@ -68,8 +69,8 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter = :resque
-  # config.active_job.queue_name_prefix = "ithelper_production"
+  config.active_job.queue_adapter = :solid_queue
+  config.active_job.queue_name_prefix = "ithelper_production"
 
   config.action_mailer.perform_caching = false
 

@@ -1,0 +1,20 @@
+<footer>
+  <% if app_version === "DEVELOPMENT"%>
+    <div id="foot-prod">
+      <p>
+        <%= help_message %>
+        <% if commit_hash.present? %>
+          <% if commit_duration.present? %>
+            Running build <em aria-label="<%= commit_hash %>" class="tooltipped tooltipped--n tooltipped--lg"><%= commit_name %></em> from <%= commit_duration %> ago.
+          <% else %>
+            Build <em aria-label="<%= commit_hash %>" class="tooltipped tooltipped--n tooltipped--lg"><%= commit_name %></em>.
+          <% end %>
+        <% end %>
+      </p>
+    </div>
+  <% else %>
+    <div id="foot-dev">
+      <p><b>DEVELOPMENT ENV</b> || Rails: <i><%= Rails::VERSION::STRING %></i> | Ruby: <i><%=ruby_version%></i> | SHA: <i><%=commit_name%></i> || <b>DEVELOPMENT ENV</b></p>
+    </div>
+  <% end %>
+</footer>

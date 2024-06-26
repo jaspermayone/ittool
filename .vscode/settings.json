@@ -1,0 +1,31 @@
+{
+  "ruby.useLanguageServer": true,
+  "ruby.useBundler": true, //run non-lint commands with bundle exec
+  "ruby.format": "rubocop", // use rubocop for formatting
+  "ruby.lint": {
+    "rubocop": {
+      "useBundler": true // enable rubocop via bundler
+    }
+  },
+  // "solargraph.externalServer": {
+  //   // external server is ran via docker-compose.solargraph.yml
+  //   "host": "localhost",
+  //   "port": 7658
+  // },
+  "[ruby][gemfile]": {
+    "editor.defaultFormatter": "castwide.solargraph"
+  },
+  "[ruby][gemfile][erb][javascript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "files.associations": {
+    "apple-app-site-association": "json"
+  },
+  "css.validate": false,
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#f3824a",
+    "titleBar.activeBackground": "#d46e3b",
+    "titleBar.activeForeground": "#f9fcfb"
+  },
+}

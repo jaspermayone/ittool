@@ -1,0 +1,32 @@
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<div id="reader" width="70vw" height="80vh"></div>
+
+<script type="text/javascript">
+  // check for url params
+  const urlParams = new URLSearchParams(window.location.search);
+  const qrCode = urlParams.get('qr_code');
+
+  const html5Qrcode = new Html5Qrcode("reader");
+
+  function onScanSuccess(qrCodeMessage) {
+    // handle on success condition with the decoded message
+    console.log(`QR code detected: ${qrCodeMessage}`);
+    html5Qrcode.stop();
+    // redirect to /checkout?qr_code=qrCodeMessage
+    // window.location.href = `/checkout?qr_code=${qrCodeMessage}`;
+    // FIXME: fix the redirect
+  }
+
+  function onScanFailure(error) {
+    // handle on failure condition, with error
+    // console.log(`QR code scan error: ${error}`);
+  }
+
+    html5Qrcode.start(
+      { facingMode: "environment" },
+      { fps: 60, qrbox: 350 },
+      onScanSuccess,
+      onScanFailure
+    );
+</script>

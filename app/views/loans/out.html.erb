@@ -1,0 +1,43 @@
+<%# list all loans in table
+
+Loan Model ~
+
+t.integer :reason, null: false, limit: 1
+t.references :borrower, null: false, foreign_key: true
+t.timestamps
+
+%>
+
+<div class="container-responsive px-3 pt-3">
+  <div class="box">
+    <h1>Loans</h1>
+
+    <div class="table-container">
+      <table class="table is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th>Borrower</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @loans.each do |loan| %>
+            <tr>
+              <td><%= loan.reason%></td>
+              <td><%= loan.borrower.email %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-container {
+     height: 78vh;
+     overflow-y: auto;
+   }
+</style>
