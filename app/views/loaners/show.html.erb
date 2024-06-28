@@ -1,6 +1,17 @@
-<div class="container-responsive px-4 pt-4">
-  <div class="box" >
-    <h1>Loaner Details</h1>
+<div class="container-responsive px-3 pt-2">
+  <div class="box">
+
+    <div class="row mb-1">
+      <div class="col">
+        <u>
+          <h3>Loaner Details</h3>
+        </u>
+      </div>
+      <div class="col-auto">
+        <%= link_to 'Back to Overview', overview_path, class: 'button is-small is-link' %>
+      </div>
+    </div>
+
     <table class="table">
       <tbody>
         <tr>
@@ -21,7 +32,7 @@
         </tr>
         <tr>
           <th>Loan Count</th>
-          <td><%= @loaner.loan_count %></td>
+          <td><%= @loaner.loans.count %></td>
         </tr>
         <tr>
           <th>Created At</th>
@@ -30,4 +41,50 @@
       </tbody>
     </table>
   </div>
+
+  <div class="box mt-4">
+    <u>
+      <h3>Loan History</h3>
+    </u>
+    <div class="table-container">
+      <table class="table is-outlined is-hoverable">
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th>Borrower Name</th>
+            <th>Borrower Email</th>
+            <th>Loaned At</th>
+            <th>Returned At</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @loaner.loans.each do |loan| %>
+            <tr>
+              <td><%= loan.reason.humanize %></td>
+              <td><%= loan.borrower.first_name %> <%= loan.borrower.last_name %></td>
+              <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
+              <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") if loan.loaned_at %></td>
+              <td><%= loan.returned_at ? loan.returned_at.strftime("%A, %B %e at %l:%M %p %Z") : "Currently Out" %></td>
+              <td><%= loan.status.capitalize %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+<style>
+  .table-container {
+    height: 30vh;
+    overflow-y: auto;
+  }
+
+  .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white;
+  }
+</style>

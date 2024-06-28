@@ -1,19 +1,24 @@
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <div class="row mb-3">
+    <div class="row mb-1 align-items-center">
       <div class="col">
-        <h1 class="mb-0">Loaners</h1>
+        <u>
+          <h2 class="mb-0">Loaners: </h2>
+        </u>
       </div>
-      <div class="col-auto">
-        <div class="form-group mb-0">
+      <div id="fil" class="col-auto">
+        <div class="form-group mb-0 mt-1 d-flex align-items-center">
           <label for="status-filter" class="mr-2">Filter by Status:</label>
           <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control' %>
         </div>
       </div>
+      <div class="col-auto">
+        <%= link_to 'Back to Overview', overview_path, class: 'button is-link' %>
+      </div>
     </div>
 
     <div class="table-responsive">
-      <table class="table is-bordered is-hoverable" id="loaners-table">
+      <table class="table is-bordered" id="loaners-table">
         <thead>
           <tr>
             <th class="id-col">ID</th>
@@ -21,6 +26,7 @@
             <th class="asset-tag-col">Asset Tag</th>
             <th class="serial-num-col">Serial Number</th>
             <th class="loan-count-col">Loan Count</th>
+            <th>Last User</th>
             <th class="actions-col">Actions</th>
           </tr>
         </thead>
@@ -38,7 +44,8 @@
               <td><%= loaner.status.capitalize %></td>
               <td><%= loaner.asset_tag %></td>
               <td><%= loaner.serial_number %></td>
-              <td><%#<%= loaner.loan_count %></td>
+              <td><%= loaner.loans.count %></td>
+              <td><%= loaner.current_loan&.borrower&.full_name || 'N/A' %></td>
               <td>
                 <% if loaner.available? %>
                   <%# <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm", target: "_blank" %>
@@ -112,6 +119,11 @@
 
   .maintenance {
     background-color: #cce5ff; /* Light blue */
+  }
+
+  #fil {
+    border: 1px dashed #902517;
+    border-radius: 5px;
   }
 </style>
 

@@ -12,6 +12,10 @@ class Borrower < ApplicationRecord
 
   before_create :parse_email
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def grade_level
     current_month = Time.now.month
   current_year = Time.now.year

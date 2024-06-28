@@ -55,13 +55,13 @@ if current_env == "development"
     { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, status: "pending", loaner_id: 7 },
     { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, status: "pending", loaner_id: 8 },
     { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
   ]
   loans.each { |loan| Loan.find_or_create_by!(loan) }
 
