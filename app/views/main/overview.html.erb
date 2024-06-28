@@ -11,8 +11,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Created At</th>
-            <th>Status </th>
-            <th></th>
+            <th>Check Out</th>
           </tr>
         </thead>
         <tbody>
@@ -22,16 +21,11 @@
               <td><%= loan.borrower.first_name %> <%= loan.borrower.last_name %></td>
               <td><%= loan.borrower.email %></td>
               <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-              <td><%= loan.status.humanize %></td>
               <td>
-                <% if loan.loaner.present? %>
-                  <p>SOMETHING WENT WRONG</p>
-                <% else %>
-                  <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
-                    <%= form.hidden_field :loan_id, value: loan.id %>
-                    <%= form.text_field :reason, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
-                    <%= form.submit "Check Out", class: "button is-small is-success" %>
-                  <% end %>
+                <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
+                  <%= form.hidden_field :loan_id, value: loan.id %>
+                  <%= form.text_field :reason, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
+                  <%= form.submit "Check Out", class: "button is-small is-success" %>
                 <% end %>
               </td>
             </tr>
@@ -49,48 +43,56 @@
       <table class="table is-outlined is-hoverable">
         <thead>
           <tr>
-            <th>Asset Tag</th>
             <th>Loaner ID</th>
-            <th>Serial Number</th>
+            <th>Asset Tag</th>
             <th>Email</th>
             <th>Loaned At</th>
+            <th>Time Before Due</th>
+            <th>Check In</th>
           </tr>
         </thead>
         <tbody>
           <% @loaners_out.each do |loaner| %>
             <% loan = loaner.current_loan %>
-            <tr>
-              <td><%= loaner.asset_tag %></td>
-              <td><%= loaner.loaner_id %></td>
-              <td><%= loaner.serial_number %></td>
-              <td><%= loan.borrower.email %></td>
-              <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+            <% if loan %>
+              <tr>
+                <td><%= loaner.loaner_id %></td>
+                <td><%= loaner.asset_tag %></td>
+                <td><%= loan.borrower.email %></td>
+                <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td><%= time_ago_in_words(loan.loaned_at) %> ago</td>
+                <td>
+                  <%= form_with url: checkin_loan_path(id: loan.id), method: :post, local: true do |form| %>
+                    <%= form.hidden_field :loan_id, value: loan.id %>
+                    <%= form.submit "Check In", class: "button is-small is-danger" %>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 
-<style>
-  .table-container {
-     height: 34vh;
-    overflow-y: auto;
+  <style>
+    .table-container {
+      height: 34vh;
+      overflow-y: auto;
     }
 
     .table thead th {
-     position: sticky;
-     top: 0;
-     z-index: 1;
-     background: white;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: white;
     }
 
-  .reason-input {
-  border: 1.5px solid #6dc492;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  max-width: 120px;
-  max-height: 30px;
-  }
-</style>
+    .reason-input {
+      border: 1.5px solid #6dc492;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      max-width: 120px;
+      max-height: 30px;
+    }
+  </style>

@@ -112,4 +112,5 @@ gem "console1984"
 
 gem "mission_control-jobs"
 gem "solid_queue"
+
 gem 'aasm'

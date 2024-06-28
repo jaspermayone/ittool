@@ -38,10 +38,12 @@
               <td><%= loaner.status.capitalize %></td>
               <td><%= loaner.asset_tag %></td>
               <td><%= loaner.serial_number %></td>
-              <td><%= loaner.loan_count %></td>
+              <td><%#<%= loaner.loan_count %></td>
               <td>
                 <% if loaner.available? %>
-                  <%= link_to "Loan Device", checkout_loan_path(loaner), class: "btn btn-primary btn-sm", target: "_blank" %>
+                  <%# <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm", target: "_blank" %>
+                  <%# QUESTION ~ Seperate Page? %>
+                  <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm" %>
                   <%= link_to "Mark Broken", broken_loaner_path(loaner),  class: "btn btn-danger btn-sm" %>
                 <% elsif loaner.loaned? %>
                   <%= link_to "Check In", return_loaner_path(loaner), class: "btn btn-success btn-sm" %>

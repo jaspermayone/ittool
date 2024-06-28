@@ -45,10 +45,11 @@ Rails.application.routes.draw do
     end
   end
 
-  post 'checkout_loan/:id', to: 'loans#checkout', as: 'checkout_loan'
-
   resources :loans do
-    post 'assign_loaner', on: :collection
+    member do
+      post :checkout # POST /loans/:id/checkout
+      post :checkin # POST /loans/:id/checkin
+    end
   end
 
 end

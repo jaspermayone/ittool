@@ -1,10 +1,17 @@
 class Loan < ApplicationRecord
   include AASM
 
+  belongs_to :borrower
+  belongs_to :loaner, optional: true  # Allow loaner to be optional
+  validates :reason, presence: true
+
   aasm :column => 'status' do
-    state :pending, initial: true
-    state :out
-    state :returned
+
+    state :pending, initial: true, display: "Pending"
+    state :out, display: "Out"
+    state :returned, display: "Returned"
+
+    after_all_transitions :log_status_change
 
     event :loan do
       transitions from: :pending, to: :out
@@ -24,10 +31,9 @@ class Loan < ApplicationRecord
 
   end
 
+  def log_status_change
+    puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+  end
+
   enum reason: { charging: 1, device_repair: 2, forgot_at_home: 3 }
-
-  belongs_to :borrower
-  belongs_to :loaner, optional: true  # Allow loaner to be optional
-
-  validates :reason, presence: true
 end

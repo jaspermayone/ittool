@@ -37,44 +37,60 @@ class LoansController < ApplicationController
   end
 
   def checkout
-    @loaner = Loaner.find_by(asset_tag: checkout_loan_params[:asset_tag])
+    @loan = Loan.find(params[:id])
 
-    if @loaner.present?
-      @loan = Loan.find_by(loaner_id: @loaner.id, status: 'pending')
+    loaner = Loaner.find_by(asset_tag: params[:asset_tag])
 
-      if @loan.present?
-        @loan.loan!
-        flash[:success] = "Loan checked out successfully."
-      else
-        flash[:danger] = "Loan not found for this loaner."
-      end
-    else
+    if loaner.nil?
       flash[:danger] = "Loaner not found."
+      redirect_to overview_path
+      return
     end
 
-    redirect_to overview_path
-  end
-
-  # POST /loans/:id/assign_loaner
-  def assign_loaner
-    @loan = Loan.find(params[:loan_id])
-    @loaner = Loaner.find_by(asset_tag: params[:asset_tag])
-
-    if @loan && @loaner
-      @loan.update(loaner_id: @loaner.id, status: 'pending')
-      redirect_to overview_path, notice: "Loaner assigned successfully."
+    # if loaner.disabled? || loaner.maintenance? || loaner.loaned?
+    if loaner.status != "available"
+      flash[:danger] = "Loaner is not available, due to wrong state."
+      redirect_to overview_path
+      return
     else
-      redirect_to overview_path, alert: "Loan or Loaner not found."
+      # update the loaner record
+      loaner.loan!
+      @loan.update!(loaner_id: loaner.id)
+      @loan.loan!
+
+      flash[:success] = "Loan successful."
+      redirect_to overview_path
     end
   end
+
+  def checkin
+    @loan = Loan.find(params[:id])
+    loaner = @loan.loaner
+
+    if loaner.nil?
+      flash[:danger] = "Loaner not found."
+      redirect_to overview_path
+      return
+    end
+
+    if loaner.available?
+      flash[:danger] = "Loaner is already available."
+      redirect_to overview_path
+      return
+    else
+      loaner.return!
+      @loan.return!
+
+      flash[:success] = "Check-in successful."
+      redirect_to overview_path
+    end
+  end
+
 
 private
-
-def checkout_loan_params
-  params.permit(:asset_tag)
-end
 
 def loan_params
   params.require(:loan).permit(:reason, :borrower_email)
 end
+
 end

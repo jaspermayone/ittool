@@ -26,26 +26,26 @@
       <%= yield %>
       <!-- <%= debug flash %> -->
       <% if flash[:info] %>
-        <div class="notification is-info">
-          <button class="delete" onclick="(this.parentNode.remove())"></button>
+        <div id="flash" class="notification is-info">
+          <button class="delete"></button>
           <%= flash[:info] %>
         </div>
       <% end %>
       <% if flash[:success] %>
-        <div class="notification is-success">
-          <button class="delete" onclick="(this.parentNode.remove())"></button>
+        <div id="flash" class="notification is-success">
+          <button class="delete"></button>
           <%= flash[:success] %>
         </div>
       <% end %>
       <% if flash[:warning] %>
-        <div class="notification is-warning">
-          <button class="delete" onclick="(this.parentNode.remove())"></button>
+        <div id="flash" class="notification is-warning">
+          <button class="delete"></button>
           <%= flash[:warning] %>
         </div>
       <% end %>
       <% if flash[:danger] %>
-        <div class="notification is-danger">
-          <button class="delete" onclick="(this.parentNode.remove())"></button>
+        <div id="flash" class="notification is-danger">
+          <button class="delete"></button>
           <%= flash[:danger] %>
         </div>
       <% end %>
@@ -109,5 +109,34 @@
           #foot-dev p, #foot-prod p {
             margin: 0;
           }
+
+          .notification {
+        position: fixed; /* Changed from absolute to fixed */
+        top: .5rem;
+        right: .5rem;
+        z-index: 1000; /* Ensure it appears above other content */
+      }
     </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+          const $notification = $delete.parentNode;
+
+          $delete.addEventListener('click', () => {
+            $notification.parentNode.removeChild($notification);
+          });
+        });
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const flash = document.getElementById('flash');
+        if (flash) {
+          setTimeout(() => {
+            flash.remove();
+          }, 5000);
+        }
+      });
+    </script>
+
   </html>
