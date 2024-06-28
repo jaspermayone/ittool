@@ -1,0 +1,78 @@
+<div class="container-responsive px-3 pt-3">
+  <div class="box">
+    <h1>Borrower Details</h1>
+
+    <p>
+      <strong>First Name:</strong>
+      <%= @borrower.first_name %>
+    </p>
+
+    <p>
+      <strong>Last Name:</strong>
+      <%= @borrower.last_name %>
+    </p>
+
+    <p>
+      <strong>Email:</strong>
+      <%= @borrower.email %>
+    </p>
+
+    <p>
+      <strong>Graduation Year:</strong>
+      <%= @borrower.graduation_year %>
+    </p>
+
+    <p>
+      <strong>Has Loan Out Currently</strong>
+      <%= @borrower.loans.any? { |loan| loan.status == 'loaned' } ? 'Yes' : 'No' %>
+    </p>
+
+    <p>
+      <strong>User Created At:</strong>
+      <%= @borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %>
+    </p>
+
+    <%# Add a loaners count to display the number of loans %>
+    <p>
+      <strong>Historical Loan Count:</strong>
+      <%= @borrower.loans.count %>
+    </p>
+
+    <%# add a table with the historical loans data %>
+    <div class="table-container">
+      <table class="table is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th>Created At</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @borrower.loans.sort_by(&:status).each do |loan| %>
+            <tr>
+              <td><%= loan.reason.humanize %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+              <td><%= loan.status.humanize %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= link_to 'Back to Overview', overview_path %>
+  </div>
+
+  <style>
+    .table-container {
+      height: 36vh;
+      overflow-y: auto;
+      border: 1px solid #e3e3e3;
+      border-radius: 5px;
+    }
+
+    .table thead th {
+      position: sticky;
+      top: 0;
+      background-color: white;
+    }
+  </style>

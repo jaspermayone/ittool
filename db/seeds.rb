@@ -19,7 +19,13 @@ if current_env == "development"
     { first_name: "J", last_name: "Mayone", email: "jmayone2025@huusd.org", graduation_year: 2025 },
     { first_name: "E", last_name: "Smith", email: "esmith2026@huusd.org", graduation_year: 2026 },
     { first_name: "L", last_name: "Jones", email: "ljones2027@huusd.org", graduation_year: 2027 },
-    { first_name: "A", last_name: "Johnson", email: "ajohnson2028@huusd.org", graduation_year: 2028 }
+    { first_name: "A", last_name: "Johnson", email: "ajohnson2028@huusd.org", graduation_year: 2028 },
+    { first_name: "B", last_name: "Williams", email: "bwilliams2028@huusd.org", graduation_year: 2028 },
+    { first_name: "C", last_name: "Brown", email: "cbrown2028@huusd.org", graduation_year: 2028 },
+    { first_name: "D", last_name: "Davis", email: "ddavis2028@huusd.org", graduation_year: 2028 },
+    { first_name: "E", last_name: "Miller", email: "emiller2028@huusd.org", graduation_year: 2028 },
+    { first_name: "F", last_name: "Wilson", email: "fwilson2028@huusd.org", graduation_year: 2028 },
+    { first_name: "G", last_name: "Moore", email: "gmoore2028@huusd.org", graduation_year: 2028 },
   ]
   borrowers.each { |borrower| Borrower.find_or_create_by!(borrower) }
 
@@ -48,6 +54,14 @@ if current_env == "development"
     { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 5.days, returned_at: DateTime.now, status: "returned", loaner_id: 6 },
     { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, status: "pending", loaner_id: 7 },
     { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, status: "pending", loaner_id: 8 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
   ]
   loans.each { |loan| Loan.find_or_create_by!(loan) }
 

@@ -52,4 +52,6 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :borrowers, only: [:show, :index]
+
 end
