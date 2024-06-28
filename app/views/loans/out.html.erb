@@ -10,10 +10,23 @@ t.timestamps
 
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <h1>Loans</h1>
+    <div class="row mb-3">
 
+      <div class="col">
+        <h1 class="mb-0">Loans (Out)</h1>
+      </div>
+
+      <div class="col-auto">
+        <%# add 2 buttons, linking to /loans/list/out and /loans/list/pending %>
+        <div class="buttons">
+          <%= link_to "All Loans (Historical)", loans_list_path, class: "btn btn-info" %>
+          <%= link_to "Pending Loans", loans_list_pending_path, class: "btn btn-info" %>
+        </div>
+      </div>
+
+    </div>
     <div class="table-container">
-      <table class="table is-striped is-hoverable">
+      <table class="table is-bordered is-striped is-hoverable">
         <thead>
           <tr>
             <th>Reason</th>
@@ -24,7 +37,7 @@ t.timestamps
         <tbody>
           <% @loans.each do |loan| %>
             <tr>
-              <td><%= loan.reason%></td>
+              <td><%= loan.reason.humanize %></td>
               <td><%= loan.borrower.email %></td>
               <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
             </tr>
@@ -37,7 +50,14 @@ t.timestamps
 
 <style>
   .table-container {
-     height: 78vh;
+     height: 76vh;
      overflow-y: auto;
    }
+
+     .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white; /* or another background color */
+  }
 </style>

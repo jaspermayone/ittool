@@ -17,14 +17,13 @@ Rails.application.routes.draw do
 
 
   # Defines the root path route ("/")
-  root "main#index"
+  root 'loans#new'
 
-  get 'loans', to: 'loans#router'
+  get 'loans', to: redirect('/')
   post 'loans', to: 'loans#create'
-  get 'loans/borrow', to: 'loans#new'
   get 'loans/list'
-  get 'loans/pending'
-  get 'loans/out'
+  get 'loans/list/pending', to: 'loans#pending'
+  get 'loans/list/out', to: 'loans#out'
 
   get 'loaners' => 'loaners#list'
   get 'loaners/list', to: redirect('loaners')
@@ -32,13 +31,24 @@ Rails.application.routes.draw do
   # Defines the checkout path route ("/checkout")
   get "scanner" => "main#scanner"
 
+  # get "checkout" =>
+
+  get "overview" => "main#overview"
+
   resources :loaners do
     member do
-      patch 'loan'
-      patch 'return'
-      patch 'enable'
-      # Add other member routes as needed
+      get :return
+      get :enable
+      get :disable
+      get :repair
+      get :broken
     end
+  end
+
+  post 'checkout_loan/:id', to: 'loans#checkout', as: 'checkout_loan'
+
+  resources :loans do
+    post 'assign_loaner', on: :collection
   end
 
 end

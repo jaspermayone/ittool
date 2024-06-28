@@ -24,10 +24,10 @@ class Loan < ApplicationRecord
 
   end
 
-  enum reason: { charging: 1, device_repair: 2 }
+  enum reason: { charging: 1, device_repair: 2, forgot_at_home: 3 }
 
   belongs_to :borrower
-  has_one :loaner
+  belongs_to :loaner, optional: true  # Allow loaner to be optional
 
   validates :reason, presence: true
 end

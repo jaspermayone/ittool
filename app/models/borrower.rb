@@ -8,7 +8,6 @@ end
 
 class Borrower < ApplicationRecord
   has_many :loans
-  has_many :loaners, through: :loans
   validates :email, presence: true, student_email: true
 
   before_create :parse_email

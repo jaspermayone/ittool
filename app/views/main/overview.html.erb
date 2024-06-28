@@ -1,0 +1,96 @@
+<div class="container-responsive px-3 pt-3">
+  <div id="div1" class="box">
+    <u>
+      <h5>Pending Loans: </h5>
+    </u>
+    <div class="table-container">
+      <table class="table is-outlined is-hoverable">
+        <thead>
+          <tr>
+            <th>Reason</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Status </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @pending_loans.each do |loan| %>
+            <tr>
+              <td><%= loan.reason.humanize %></td>
+              <td><%= loan.borrower.first_name %> <%= loan.borrower.last_name %></td>
+              <td><%= loan.borrower.email %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+              <td><%= loan.status.humanize %></td>
+              <td>
+                <% if loan.loaner.present? %>
+                  <p>SOMETHING WENT WRONG</p>
+                <% else %>
+                  <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
+                    <%= form.hidden_field :loan_id, value: loan.id %>
+                    <%= form.text_field :reason, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
+                    <%= form.submit "Check Out", class: "button is-small is-success" %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="div2" class="box">
+    <u>
+      <h5>Out Loaners: </h5>
+    </u>
+    <div class="table-container">
+      <table class="table is-outlined is-hoverable">
+        <thead>
+          <tr>
+            <th>Asset Tag</th>
+            <th>Loaner ID</th>
+            <th>Serial Number</th>
+            <th>Email</th>
+            <th>Loaned At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @loaners_out.each do |loaner| %>
+            <% loan = loaner.current_loan %>
+            <tr>
+              <td><%= loaner.asset_tag %></td>
+              <td><%= loaner.loaner_id %></td>
+              <td><%= loaner.serial_number %></td>
+              <td><%= loan.borrower.email %></td>
+              <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-container {
+     height: 34vh;
+    overflow-y: auto;
+    }
+
+    .table thead th {
+     position: sticky;
+     top: 0;
+     z-index: 1;
+     background: white;
+    }
+
+  .reason-input {
+  border: 1.5px solid #6dc492;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  max-width: 120px;
+  max-height: 30px;
+  }
+</style>

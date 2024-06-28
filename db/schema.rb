@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_195531) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_28_040937) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -100,13 +100,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_195531) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "current_loan_id"
     t.index ["asset_tag"], name: "index_loaners_on_asset_tag"
+    t.index ["current_loan_id"], name: "index_loaners_on_current_loan_id"
     t.index ["loaner_id"], name: "index_loaners_on_loaner_id"
     t.index ["status"], name: "index_loaners_on_status"
   end
 
+  create_table "loaners_borrowers", id: false, force: :cascade do |t|
+    t.integer "loaner_id"
+    t.integer "borrower_id"
+    t.index ["borrower_id"], name: "index_loaners_borrowers_on_borrower_id"
+    t.index ["loaner_id", "borrower_id"], name: "index_loaners_borrowers_on_loaner_id_and_borrower_id", unique: true
+    t.index ["loaner_id"], name: "index_loaners_borrowers_on_loaner_id"
+  end
+
   create_table "loans", force: :cascade do |t|
-    t.integer "reason", limit: 1, null: false
+    t.integer "reason", limit: 3
     t.integer "borrower_id", null: false
     t.datetime "loaned_at"
     t.datetime "returned_at"
@@ -234,6 +244,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_195531) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "loaners", "loans", column: "current_loan_id"
   add_foreign_key "loans", "borrowers"
   add_foreign_key "loans", "loaners"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

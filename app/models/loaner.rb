@@ -76,5 +76,6 @@ class Loaner < ApplicationRecord
   validates :serial_number, uniqueness: true
   validates :loaner_id, presence: true, uniqueness: true
   has_many :loans, foreign_key: 'loaner_id'
+  has_one :current_loan, -> { where(status: 'borrowed').order(loaned_at: :desc) }, class_name: 'Loan'
   has_many :borrowers, through: :loans
 end

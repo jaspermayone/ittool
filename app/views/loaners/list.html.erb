@@ -13,20 +13,27 @@
     </div>
 
     <div class="table-responsive">
-      <table class="table">
+      <table class="table is-bordered is-hoverable" id="loaners-table">
         <thead>
           <tr>
-            <th>Loaner ID</th>
-            <th>Status</th>
-            <th>Asset Tag</th>
-            <th>Serial Number</th>
-            <th>Loan Count</th>
-            <th>Actions</th>
+            <th class="id-col">ID</th>
+            <th class="status-col">Status</th>
+            <th class="asset-tag-col">Asset Tag</th>
+            <th class="serial-num-col">Serial Number</th>
+            <th class="loan-count-col">Loan Count</th>
+            <th class="actions-col">Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @loaners.each do |loaner| %>
-            <tr>
+            <% row_class = case loaner.status.downcase
+                          when 'available' then 'available'
+                          when 'loaned' then 'loaned'
+                          when 'disabled' then 'disabled'
+                          when 'maintenance' then 'maintenance'
+                          else ''
+                          end %>
+            <tr class="<%= row_class %>">
               <td><%= loaner.loaner_id %></td>
               <td><%= loaner.status.capitalize %></td>
               <td><%= loaner.asset_tag %></td>
@@ -34,11 +41,14 @@
               <td><%= loaner.loan_count %></td>
               <td>
                 <% if loaner.available? %>
-                  <%= link_to "Check Out", loan_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-primary btn-sm" %>
+                  <%= link_to "Loan Device", checkout_loan_path(loaner), class: "btn btn-primary btn-sm", target: "_blank" %>
+                  <%= link_to "Mark Broken", broken_loaner_path(loaner),  class: "btn btn-danger btn-sm" %>
                 <% elsif loaner.loaned? %>
-                  <%= link_to "Check In", return_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-warning btn-sm" %>
-                <% elsif loaner.disabled? || loaner.maintenance? %>
-                  <%= link_to "Mark as Available", enable_loaner_path(loaner), method: :patch, data: { confirm: 'Are you sure?' }, class: "btn btn-success btn-sm" %>
+                  <%= link_to "Check In", return_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                <% elsif loaner.disabled? %>
+                  <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                <% elsif loaner.maintenance? %>
+                  <%= link_to "Repair", repair_loaner_path(loaner), class: "btn btn-success btn-sm" %>
                 <% end %>
               </td>
             </tr>
@@ -51,26 +61,56 @@
 
 <style>
   .table-responsive {
-     height: 75vh;
-     overflow-y: auto;
-   }
+    height: 75vh;
+    overflow-y: auto;
+  }
 
-   /* Define your status colors here as needed */
-   .available {
-     background-color: #d4edda; /* Light green */
-   }
+  .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white; /* or another background color */
+  }
 
-   .loaned {
-     background-color: #fff3cd; /* Light yellow */
-   }
+  .id-col {
+    width: 50px; /* Adjust the width as needed */
+  }
 
-   .disabled {
-     background-color: #f8d7da; /* Light red */
-   }
+  .status-col {
+    width: 100px; /* Adjust the width as needed */
+  }
 
-   .maintenance {
-     background-color: #cce5ff; /* Light blue */
-   }
+  .asset-tag-col {
+    width: 120px; /* Adjust the width as needed */
+  }
+
+  .serial-num-col {
+    width: 100px; /* Adjust the width as needed */
+  }
+
+  .loan-count-col {
+    width: 120px; /* Adjust the width as needed */
+  }
+
+  .actions-col {
+  }
+
+  /* Define your status colors here as needed */
+  .available {
+    background-color: #d4edda; /* Light green */
+  }
+
+  .loaned {
+    background-color: #fff3cd; /* Light yellow */
+  }
+
+  .disabled {
+    background-color: #f8d7da; /* Light red */
+  }
+
+  .maintenance {
+    background-color: #cce5ff; /* Light blue */
+  }
 </style>
 
 <script>
@@ -79,11 +119,11 @@
     const rows = document.querySelectorAll('#loaners-table tbody tr');
 
     filterSelect.addEventListener('change', function() {
-      const selectedStatus = filterSelect.value;
+      const selectedStatus = filterSelect.value.toLowerCase();
 
       rows.forEach(row => {
-        const status = row.classList[0]; // Get the first class which represents status
-        if (selectedStatus === 'all' || selectedStatus === status) {
+        const status = row.classList.contains(selectedStatus); // Check if row has the status class
+        if (selectedStatus === 'all' || status) {
           row.style.display = ''; // Show the row
         } else {
           row.style.display = 'none'; // Hide the row
@@ -91,7 +131,7 @@
       });
     });
 
-    // Function to apply status-based coloring
+    // Function to apply status-based coloring (if needed initially)
     function applyStatusColors() {
       rows.forEach(row => {
         const status = row.classList[0]; // Get the first class which represents status
@@ -100,10 +140,7 @@
       });
     }
 
-    // Initial call to apply status colors on page load
+    // Initial call to apply status colors on page load (optional if rows already have classes)
     applyStatusColors();
-
-    // Reapply status colors when filter changes
-    filterSelect.addEventListener('change', applyStatusColors);
   });
 </script>
