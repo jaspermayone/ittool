@@ -1,6 +1,9 @@
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <h1>Borrower List</h1>
+    <div>
+      <h1>Borrower List</h1>
+      <p>(sorted by # of loans)</p>
+    </div>
 
     <div class="table-container">
       <table class="table is-striped is-hoverable">
@@ -10,41 +13,44 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Graduation Year</th>
+            <th>Loans</th>
             <th>Created At</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <% @borrowers.each do |borrower| %>
-            <tr>
-              <td><%= borrower.first_name %></td>
-              <td><%= borrower.last_name %></td>
-              <td><%= borrower.email %></td>
-              <td><%= borrower.graduation_year %></td>
-              <td><%= borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-              <td>
-                <%= link_to 'View', borrower_path(borrower), class: 'button is-small is-link' %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+          <%# <% @borrowers.each do |borrower| %>
+            <% @borrowers.sort_by { |borrower| -borrower.loans.count }.each do |borrower| %>
+              <tr>
+                <td><%= borrower.first_name %></td>
+                <td><%= borrower.last_name %></td>
+                <td><%= borrower.email %></td>
+                <td><%= borrower.graduation_year %></td>
+                <td><%= borrower.loans.count %></td>
+                <td><%= borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td>
+                  <%= link_to 'View', borrower_path(borrower), class: 'button is-small is-link' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <%= link_to 'Back to Overview', overview_path, class: 'button is-link' %>
     </div>
-    <%= link_to 'Back to Overview', overview_path, class: 'button is-link' %>
+
+    <style>
+      .table-container {
+        height: 70vh;
+        overflow-y: auto;
+        border: 1px solid #e3e3e3;
+        border-radius: 5px;
+      }
+
+      .table thead th {
+        position: sticky;
+        top: 0;
+        background-color: white;
+      }
+    </style>
   </div>
-
-  <style>
-    .table-container {
-      height: 70vh;
-      overflow-y: auto;
-      border: 1px solid #e3e3e3;
-      border-radius: 5px;
-    }
-
-    .table thead th {
-      position: sticky;
-      top: 0;
-      background-color: white;
-    }
-  </style>
-</div>
