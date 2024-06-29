@@ -1,19 +1,17 @@
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <div class="row mb-1 align-items-center">
+    <div class="row mb-3 align-items-center">
       <div class="col">
         <u>
-          <h2 class="mb-0">Loaners: </h2>
+          <h3 class="mb-0">Loaners: </h3>
         </u>
       </div>
-      <div id="fil" class="col-auto">
-        <div class="form-group mb-0 mt-1 d-flex align-items-center">
-          <label for="status-filter" class="mr-2">Filter by Status:</label>
-          <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control' %>
-        </div>
+      <div id="fil" class="col-auto d-flex align-items-center">
+        <label for="status-filter" class="mr-2 mb-0">Filter by Status:</label>
+        <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control' %>
       </div>
       <div class="col-auto">
-        <%= link_to 'Back to Overview', overview_path, class: 'button is-link' %>
+        <%= link_to 'Back to Overview', overview_path, class: 'btn btn-primary' %>
       </div>
     </div>
 
@@ -42,14 +40,12 @@
             <tr class="<%= row_class %>">
               <td><%= loaner.loaner_id %></td>
               <td><%= loaner.status.capitalize %></td>
-              <td><%= loaner.asset_tag %></td>
-              <td><%= loaner.serial_number %></td>
+              <td><%= link_to loaner.asset_tag, loaner_path(loaner), class: "lnk" %></td>
+              <td><%= link_to loaner.serial_number, loaner_path(loaner), class: "lnk" %></td>
               <td><%= loaner.loans.count %></td>
               <td><%= loaner.current_loan&.borrower&.full_name || 'N/A' %></td>
               <td>
                 <% if loaner.available? %>
-                  <%# <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm", target: "_blank" %>
-                  <%# QUESTION ~ Seperate Page? %>
                   <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm" %>
                   <%= link_to "Mark Broken", broken_loaner_path(loaner),  class: "btn btn-danger btn-sm" %>
                 <% elsif loaner.loaned? %>
@@ -78,52 +74,63 @@
     position: sticky;
     top: 0;
     z-index: 1;
-    background: white; /* or another background color */
+    background: white;
   }
 
   .id-col {
-    width: 50px; /* Adjust the width as needed */
+    width: 50px;
   }
 
   .status-col {
-    width: 100px; /* Adjust the width as needed */
+    width: 100px;
   }
 
   .asset-tag-col {
-    width: 120px; /* Adjust the width as needed */
+    width: 120px;
   }
 
   .serial-num-col {
-    width: 100px; /* Adjust the width as needed */
+    width: 100px;
   }
 
   .loan-count-col {
-    width: 120px; /* Adjust the width as needed */
+    width: 120px;
   }
 
-  .actions-col {
-  }
-
-  /* Define your status colors here as needed */
   .available {
-    background-color: #d4edda; /* Light green */
+    background-color: #d4edda;
   }
 
   .loaned {
-    background-color: #fff3cd; /* Light yellow */
+    background-color: #fff3cd;
   }
 
   .disabled {
-    background-color: #f8d7da; /* Light red */
+    background-color: #f8d7da;
   }
 
   .maintenance {
-    background-color: #cce5ff; /* Light blue */
+    background-color: #cce5ff;
   }
 
   #fil {
     border: 1px dashed #902517;
     border-radius: 5px;
+    padding: 3px;
+  }
+
+  .lnk {
+    color: #000;
+    font-style: italic;
+    text-decoration: underline;
+  }
+
+  .btn {
+    margin-left: 5px;
+  }
+
+  label[for="status-filter"] {
+    white-space: nowrap;
   }
 </style>
 
@@ -136,25 +143,23 @@
       const selectedStatus = filterSelect.value.toLowerCase();
 
       rows.forEach(row => {
-        const status = row.classList.contains(selectedStatus); // Check if row has the status class
+        const status = row.classList.contains(selectedStatus);
         if (selectedStatus === 'all' || status) {
-          row.style.display = ''; // Show the row
+          row.style.display = '';
         } else {
-          row.style.display = 'none'; // Hide the row
+          row.style.display = 'none';
         }
       });
     });
 
-    // Function to apply status-based coloring (if needed initially)
     function applyStatusColors() {
       rows.forEach(row => {
-        const status = row.classList[0]; // Get the first class which represents status
-        row.classList.remove('available', 'loaned', 'disabled', 'maintenance'); // Remove all status classes
-        row.classList.add(status); // Add the current status class
+        const status = row.classList[0];
+        row.classList.remove('available', 'loaned', 'disabled', 'maintenance');
+        row.classList.add(status);
       });
     }
 
-    // Initial call to apply status colors on page load (optional if rows already have classes)
     applyStatusColors();
   });
 </script>

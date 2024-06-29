@@ -11,10 +11,12 @@ t.timestamps
 <div class="container-responsive px-3 pt-3">
   <div class="box">
 
-    <div class="row mb-3">
+    <div class="row mb-2">
 
       <div class="col">
-        <h1 class="mb-0">All Loans (Historical)</h1>
+        <u>
+          <h3 class="mb-0">All Loans (Historical)</h3>
+        </u>
       </div>
 
       <div class="col-auto">
@@ -24,11 +26,15 @@ t.timestamps
           <%= link_to "Pending Loans", loans_list_pending_path, class: "btn btn-info" %>
         </div>
       </div>
+      <br/>
+      <div class="col-auto">
+        <%= link_to 'Back to Overview', overview_path, class: 'btn btn-primary' %>
+      </div>
 
     </div>
 
     <div class="table-container">
-      <table class="table is-bordered is-hoverable">
+      <table class="table is-striped is-bordered is-hoverable">
         <thead>
           <tr>
             <th>Reason</th>
@@ -60,7 +66,7 @@ t.timestamps
 
 <style>
   .table-container {
-     height: 76vh;
+     height: 80vh;
      overflow-y: auto;
    }
 

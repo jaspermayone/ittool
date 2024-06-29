@@ -33,9 +33,6 @@ class LoansController < ApplicationController
     @loans = Loan.where(status: "out").order(created_at: :desc)
   end
 
-  def router
-  end
-
   def checkout
     @loan = Loan.find(params[:id])
 
