@@ -2,7 +2,6 @@ class LoanersController < ApplicationController
   before_action :set_loaner, only: [:show, :return, :enable, :disable, :repair, :broken]
 
 def list
-  # @loaners = Loaner.all!sort_by(&:asset_tag)
   @loaners = Loaner.all
 end
 

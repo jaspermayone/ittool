@@ -13,10 +13,10 @@ class LoansController < ApplicationController
     @loan = @borrower.loans.build(loan_params.except(:borrower_email))
 
     if @loan.save
-      flash[:success] = "Loan application submitted successfully."
+      flash[:success] = "Submitted Successfully!"
       redirect_to loans_path
     else
-      flash.now[:danger] = "Loan application failed to submit."
+      flash.now[:danger] = "FAILED TO SUBMIT! Please check with a tech."
       render :new
     end
   end
