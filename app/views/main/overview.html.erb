@@ -1,16 +1,13 @@
 <div class="container-responsive px-3 pt-3">
-
   <div class="box">
-
     <div class="row align-items-center justify-content-between">
       <div class="col-auto">
         <div class="d-flex align-items-center">
           <u>
-            <h3> IT TOOL </h3>
+            <h3>IT TOOL</h3>
           </u>
         </div>
       </div>
-
       <div class="col-auto">
         <%= link_to 'Borrowers', borrowers_path, class: 'button is-small', id: "bn" %>
         <%= link_to 'Loaners (All)', loaners_path, class: 'button is-small', id: "bn" %>
@@ -19,7 +16,6 @@
         <%= link_to 'Loans (Pending)', loans_list_pending_path, class: 'button is-small', id: "bn" %>
       </div>
     </div>
-
   </div>
 
   <div id="div1" class="box">
@@ -47,7 +43,7 @@
               <td>
                 <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
                   <%= form.hidden_field :loan_id, value: loan.id %>
-                  <%= form.text_field :reason, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
+                  <%= form.text_field :asset_tag, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
                   <%= form.submit "Check Out", class: "button is-small is-success" %>
                 <% end %>
               </td>
@@ -130,3 +126,4 @@
       margin-left: 10px;
     }
   </style>
+</div>

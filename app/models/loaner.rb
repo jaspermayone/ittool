@@ -18,7 +18,8 @@ class Loaner < ApplicationRecord
     after_all_transitions :log_status_change
 
     event :loan do
-      transitions from: :available, to: :loaned, guard: :pending_loan_present?
+      # transitions from: :available, to: :loaned, guard: :pending_loan_present?
+      transitions from: :available, to: :loaned
 
       after do
         assign_current_loan
@@ -50,9 +51,9 @@ class Loaner < ApplicationRecord
     puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
-  def pending_loan_present?
-    loans.pending.exists?
-  end
+  # def pending_loan_present?
+  #   loans.pending.exists?
+  # end
 
   def assign_current_loan
     current_loan = loans.pending.first

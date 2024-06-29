@@ -35,29 +35,28 @@ class LoansController < ApplicationController
 
   def checkout
     @loan = Loan.find(params[:id])
-
     loaner = Loaner.find_by(asset_tag: params[:asset_tag])
 
     if loaner.nil?
       flash[:danger] = "Loaner not found."
-      redirect_to overview_path
-      return
+      redirect_to overview_path and return
     end
 
-    # if loaner.disabled? || loaner.maintenance? || loaner.loaned?
-    if loaner.status != "available"
-      flash[:danger] = "Loaner is not available, due to wrong state."
-      redirect_to overview_path
-      return
-    else
-      # update the loaner record
+    unless loaner.available?
+      flash[:danger] = "Loaner is not available."
+      redirect_to overview_path and return
+    end
+
+    begin
       loaner.loan!
       @loan.update!(loaner_id: loaner.id)
       @loan.loan!
-
       flash[:success] = "Loan successful."
-      redirect_to overview_path
+    rescue AASM::InvalidTransition => e
+      flash[:danger] = "Loan transition failed: #{e.message}"
     end
+
+    redirect_to overview_path
   end
 
   def checkin
