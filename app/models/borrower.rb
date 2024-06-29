@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: borrowers
+#
+#  id              :integer          not null, primary key
+#  email           :string
+#  first_name      :string
+#  graduation_year :integer
+#  last_name       :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
 class StudentEmailValidator < ActiveModel::Validator
   def validate(record)
     unless record.email =~ /^[a-zA-Z][a-zA-Z]+[0-9]{4}@huusd\.org$/

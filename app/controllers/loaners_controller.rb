@@ -1,5 +1,8 @@
 class LoanersController < ApplicationController
+  include Authenticatable
+
   before_action :set_loaner, only: [:show, :return, :enable, :disable, :repair, :broken]
+  before_action :ensure_authenticated, only: [:index, :show, :return, :enable, :disable, :repair, :broken]
 
 def list
   @loaners = Loaner.all

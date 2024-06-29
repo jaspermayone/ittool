@@ -72,4 +72,15 @@ if current_env == "development"
     loaner_7.update!(current_loan_id: pending_loan_for_loaner_7.id)
     loaner_7.loan! # trigger the loan event
   end
+
+  # create a user (has secure password)
+  User.find_or_create_by!(email: "me@jaspermayone.com") do |user|
+    user.f_name = "Jasper"
+    user.l_name = "Mayone"
+    user.password = "password"
+    user.password_confirmation = "password"
+    user.role = "admin"
+  end
+
+
 end

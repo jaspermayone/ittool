@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_28_040937) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_29_212437) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -48,6 +48,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_28_040937) do
     t.datetime "updated_at", null: false
     t.index ["auditor_id"], name: "index_audits1984_audits_on_auditor_id"
     t.index ["session_id"], name: "index_audits1984_audits_on_session_id"
+  end
+
+  create_table "authentications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "borrowers", force: :cascade do |t|
