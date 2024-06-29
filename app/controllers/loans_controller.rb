@@ -1,7 +1,7 @@
 class LoansController < ApplicationController
   include Authenticatable
 
-  before_action :ensure_authenticated, only: [:new, :create, :list, :pending, :out, :checkout, :checkin]
+  before_action :ensure_authenticated, only: [:create, :list, :pending, :out, :checkout, :checkin]
 
   def new
     @loan = Loan.new

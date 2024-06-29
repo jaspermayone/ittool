@@ -29,14 +29,14 @@ Rails.application.routes.draw do
   get 'loaners/list', to: redirect('loaners')
 
   # Defines the checkout path route ("/checkout")
-  get "scanner" => "staff#scanner"
+  get "scanner" => "main#scanner"
 
   get "login", to: "authentications#new"
   get "logout", to: "authentications#destroy"
 
   # get "checkout" =>
 
-  get "overview" => "staff#overview"
+  get "overview" => "main#overview"
 
   resources :loaners do
     member do
