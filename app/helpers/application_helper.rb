@@ -5,7 +5,7 @@ def current_page?(path)
 end
 
 def relative_timestamp(time, options = {})
-  content_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago#{options[:suffix]}", options.merge(title: time)
+  ontent_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago#{options[:suffix]}", options.merge(title: time)
 end
 
 def help_message
@@ -37,11 +37,12 @@ end
 
 def commit_time
   @commit_time ||= begin
-    git_time = `git log -1 --format=%at`.chomp
+    heroku_time = ENV["HEROKU_RELEASE_CREATED_AT"]
+    git_time = `git log -1 --format=%at`&.chomp
 
-    return nil if git_time.blank?
+    return nil if heroku_time.blank? && git_time.blank?
 
-    Time.at(git_time.to_i) rescue nil # Convert the Unix epoch time to a Time object, handle error gracefully
+    heroku_time.blank? ? git_time.to_i : Time.parse(heroku_time)
   end
 
   @commit_time
@@ -51,10 +52,8 @@ def commit_duration
   @commit_duration ||= begin
     return nil if commit_time.nil?
 
-    distance_of_time_in_words(commit_time, Time.now)
+    distance_of_time_in_words Time.at(commit_time), Time.now
   end
-
-  @commit_duration
 end
 
 module_function :commit_hash, :commit_time

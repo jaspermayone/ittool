@@ -1,11 +1,28 @@
 # frozen_string_literal: true
 
 module Util
+
+  def self.unixtime(unixtime)
+    DateTime.strptime(unixtime.to_s, "%s")
+  end
+
+  # provided by https://github.com/jaspermayone/heroku-buildpack-sourceversion
+  def self.source_version
+    file = File.open(".source_version")
+    result = file.read.strip
+    file.close
+
+    result
+  rescue Errno::ENOENT
+    return nil
+  end
+
   # also in ApplicationHelper for frontend use
   def self.commit_hash
     @commit_hash ||= begin
-      commit_hash = `git rev-parse --short HEAD`.strip
-      commit_hash.presence || "unknown"
+      result = ENV["HEROKU_SLUG_COMMIT"]
+      result ||= source_version
+      result ||= `git show --pretty=%H -q`&.chomp
     end
 
     @commit_hash
@@ -13,8 +30,7 @@ module Util
 
   def self.commit_dirty?
     @commit_dirty ||= begin
-      commit_dirty = `git status --porcelain`.strip.present?
-      commit_dirty
+      `git diff --shortstat 2> /dev/null | tail -n1`&.chomp.present?
     end
     @commit_dirty
   end
