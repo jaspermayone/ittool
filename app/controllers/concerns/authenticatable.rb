@@ -32,4 +32,21 @@ module Authenticatable
       redirect_to root_path
     end
   end
+
+
+  def ensure_admin
+    unless current_user&.admin?
+      flash[:danger] = "You do not have permission to view that page."
+      redirect_to root_path
+    end
+  end
+
+  def ensure_super_admin
+    unless current_user&.super_admin?
+      flash[:danger] = "You do not have permission to view that page."
+      redirect_to root_path
+    end
+  end
+
+
 end

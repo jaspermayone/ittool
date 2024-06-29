@@ -38,6 +38,9 @@ Rails.application.routes.draw do
 
   get "overview" => "main#overview"
 
+get "import" => "main#import"
+post 'process_import' => 'main#process_import'
+
   resources :loaners do
     member do
       get :return

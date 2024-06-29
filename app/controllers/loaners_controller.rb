@@ -2,7 +2,22 @@ class LoanersController < ApplicationController
   include Authenticatable
 
   before_action :set_loaner, only: [:show, :return, :enable, :disable, :repair, :broken]
-  before_action :ensure_authenticated, only: [:index, :show, :return, :enable, :disable, :repair, :broken]
+  before_action :ensure_authenticated, only: [:show, :list, :return, :enable, :disable, :repair, :broken, :new, :create]
+before_action :ensure_super_admin, only: [:new, :create]
+
+def new
+  @loaner = Loaner.new
+end
+
+def create
+  @loaner = Loaner.new(loaner_params)
+  if @loaner.save
+    redirect_to @loaner, notice: 'Loaner was successfully created.'
+  else
+    render :new
+  end
+end
+
 
 def list
   @loaners = Loaner.all
@@ -67,6 +82,10 @@ private
 # Use callbacks to share common setup or constraints between actions.
 def set_loaner
   @loaner = Loaner.find(params[:id])
+end
+
+def loaner_params
+  params.require(:loaner).permit(:asset_tag, :serial_number, :status)
 end
 
 end

@@ -160,6 +160,7 @@ GEM
     coverband (6.1.2)
       redis (>= 3.0)
     crass (1.0.6)
+    csv (3.3.0)
     danger (9.4.3)
       claide (~> 1.0)
       claide-plugins (>= 0.9.2)
@@ -581,6 +582,7 @@ DEPENDENCIES
   capybara
   console1984
   coverband
+  csv
   danger
   debug
   debugbar

@@ -33,6 +33,8 @@ end
 class Loaner < ApplicationRecord
   include AASM
 
+  before_create :set_loaner_id
+
   aasm column: 'status' do
     state :available, initial: true, display: "Available"
     state :loaned, display: "Loaned"
@@ -96,4 +98,13 @@ class Loaner < ApplicationRecord
   has_many :loans, foreign_key: 'loaner_id'
   has_one :current_loan, -> { where(status: 'out').order(loaned_at: :desc) }, class_name: 'Loan'
   has_many :borrowers, through: :loans
+
+  private
+
+  def set_loaner_id
+    # Find the maximum current loaner_id
+    max_id = Loaner.maximum(:loaner_id) || 0
+    self.loaner_id = max_id + 1
+  end
+
 end

@@ -117,3 +117,4 @@ gem "mission_control-jobs"
 gem "solid_queue"
 
 gem 'aasm'
+gem 'csv'

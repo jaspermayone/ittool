@@ -1,0 +1,15 @@
+<!-- app/views/main/import.html.erb -->
+<div class="container-responsive pt-3 px-3">
+  <div class="box" >
+
+    <%= form_with url: process_import_path, local: true, multipart: true do |form| %>
+      <div class="form-group">
+        <%= form.label :csv_file, 'CSV File', class: 'form-label' %>
+        <%= form.file_field :csv_file, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= form.submit 'Import', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>
