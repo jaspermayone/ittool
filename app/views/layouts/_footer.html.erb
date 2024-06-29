@@ -1,5 +1,5 @@
 <footer>
-  <% if app_version != "DEVELOPMENT"%>
+  <% if app_version === "DEVELOPMENT"%>
     <div id="foot-dev" class="footer-content">
       <p><b>DEVELOPMENT ENV</b> || Rails: <i><%= Rails::VERSION::STRING %></i> | Ruby: <i><%= ruby_version %></i> | SHA: <i><%= commit_name %></i> || <b>DEVELOPMENT ENV</b></p>
     </div>
