@@ -17,6 +17,9 @@ class MainController < ApplicationController
     @loaners_out = Loaner.includes(:current_loan).where(status: 'loaned')
   end
 
+  def temp
+  end
+
   def import
     # This action will render the import form
   end

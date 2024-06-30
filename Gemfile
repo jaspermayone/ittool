@@ -118,3 +118,4 @@ gem "solid_queue"
 
 gem 'aasm'
 gem 'csv'
+gem 'postmark-rails'

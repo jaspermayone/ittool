@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   # get "checkout" =>
 
   get "overview" => "main#overview"
+  get "temp" => "main#temp"
 
 get "import" => "main#import"
 post 'process_import' => 'main#process_import'

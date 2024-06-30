@@ -28,6 +28,10 @@ class Borrower < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def name
+    "#{full_name}"
+  end
+
   def grade_level
     current_month = Time.now.month
   current_year = Time.now.year
