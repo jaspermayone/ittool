@@ -16,7 +16,7 @@ end
 def notify_loaner_disabled(borrower)
   @borrower = borrower
   mail(
-    to: @user.email,
+    to: @borrower.email,
     subject: 'Your device has been disabled.',
     track_opens: "true",
     track_clicks: "true",
@@ -27,7 +27,7 @@ end
 def return_reminder(borrower)
   @borrower = borrower
   mail(
-    to: @user.email,
+    to: @borrower.email,
     subject: 'Please return your device.',
     track_opens: "true",
     track_clicks: "true",

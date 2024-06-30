@@ -3,6 +3,7 @@
 # Table name: loans
 #
 #  id          :integer          not null, primary key
+#  due_date    :date
 #  loaned_at   :datetime
 #  reason      :integer
 #  returned_at :datetime

@@ -18,6 +18,10 @@ class MainController < ApplicationController
   end
 
   def temp
+    @borrower = Borrower.find(1)
+    BorrowerMailer.notify_repair_ready(@borrower).deliver_now
+    BorrowerMailer.notify_loaner_disabled(@borrower).deliver_now
+    BorrowerMailer.return_reminder(@borrower).deliver_now
   end
 
   def import

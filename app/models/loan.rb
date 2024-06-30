@@ -3,6 +3,7 @@
 # Table name: loans
 #
 #  id          :integer          not null, primary key
+#  due_date    :date
 #  loaned_at   :datetime
 #  reason      :integer
 #  returned_at :datetime
@@ -43,6 +44,19 @@ class Loan < ApplicationRecord
 
       after do
         self.update(loaned_at: Time.now)
+        # SHOWME: This is the time for the due date, confirm this with justin
+        self.update(due_date: Date.today + 1.day)
+
+        due_date_time = self.due_date.to_time
+
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 1.day).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 2.days).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 3.days).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 4.days).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 5.days).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 6.days).perform_later(self.id)
+        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 7.days).perform_later(self.id)
+        BorrowerUnreturnedAfterSevenDaysJob.set(wait_until: due_date_time + 8.days).perform_later(self.id)
       end
     end
 

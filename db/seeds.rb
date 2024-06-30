@@ -47,21 +47,21 @@ if current_env == "development"
   loaners.each { |loaner| Loaner.find_or_create_by!(loaner) }
 
   loans = [
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 2 },
-    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, returned_at: DateTime.now, status: "returned", loaner_id: 3 },
-    { reason: 3, borrower_id: 3, loaned_at: DateTime.now - 3.days, returned_at: DateTime.now, status: "returned", loaner_id: 4 },
-    { reason: 2, borrower_id: 4, loaned_at: DateTime.now - 4.days, returned_at: DateTime.now, status: "returned", loaner_id: 5 },
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 5.days, returned_at: DateTime.now, status: "returned", loaner_id: 6 },
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, status: "pending", loaner_id: 7 },
-    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, status: "pending", loaner_id: 8 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, status: "returned", loaner_id: 7 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 2 },
+    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 3 },
+    { reason: 3, borrower_id: 3, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 4 },
+    { reason: 2, borrower_id: 4, loaned_at: DateTime.now - 4.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 5 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 5.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 6 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: self.loaned_at + 1.day,  status: "pending", loaner_id: 7 },
+    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: self.loaned_at + 1.day,  status: "pending", loaner_id: 8 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day,  status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day,  status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
   ]
   loans.each { |loan| Loan.find_or_create_by!(loan) }
 
