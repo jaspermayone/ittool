@@ -9,6 +9,8 @@
     <p>The student <%= @loan.borrower.name %> (<%= @loan.borrower.email %>) has not returned the loaner device after seven days of reminders.</p>
     <p>Please follow up with the student to ensure the device is returned.</p>
 
+    <p>View the student info <a href=<%=borrower_path(@borrower)%>>here</a>.</p>
+
     <p>Jasper's Very Grumpy Robot</p>
   </body>
 </html>

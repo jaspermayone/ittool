@@ -4,6 +4,7 @@ default from: 'ithelper@jaspermayone.com'
 
 def notify_unreturned_after_seven_days(loan)
   @loan = loan
+  @borrower = Borrower.find(@loan.borrower_id)
   mail(
     subject: "Student has not returned Loaner after seven days.",
     to: "jmayone2025@huusd.org",
