@@ -5,10 +5,12 @@ class BorrowersController < ApplicationController
 
 def index
   @borrowers = Borrower.all
+  StatsD.increment("borrowers_index_viewed")
 end
 
 def show
   @borrower = Borrower.find(params[:id])
+  StatsD.increment("borrower_page_viewed")
 end
 
 end
