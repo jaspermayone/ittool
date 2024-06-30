@@ -35,33 +35,28 @@ if current_env == "development"
     { loaner_id: 3, asset_tag: "201535", serial_number: "LI9TFQIN19108328", status: "disabled" },
     { loaner_id: 4, asset_tag: "201524", serial_number: "LI9TFQIN19108343", status: "maintenance" },
     { loaner_id: 5, asset_tag: "800002", serial_number: "LI9TFQIN19248E6B", status: "available" },
-    { loaner_id: 6, asset_tag: "201552", serial_number: "LI9TFQIN19108248", status: "available"},
-    { loaner_id: 7, asset_tag: "201610", serial_number: "LI9TFQIN19108348", status: "available"},
-    { loaner_id: 8, asset_tag: "400350", serial_number: "LI9TFQIN19248B14", status: "available"},
-    { loaner_id: 9, asset_tag: "800003", serial_number: "LI9TFQIN19108363", status: "available"},
-    { loaner_id: 10, asset_tag: "800004", serial_number: "LI9TFQIN191082DD", status: "available"},
-    { loaner_id: 11, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "available"},
-    { loaner_id: 12, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "available"},
-    { loaner_id: 13, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "available"},
+    { loaner_id: 6, asset_tag: "201552", serial_number: "LI9TFQIN19108248", status: "available" },
+    { loaner_id: 7, asset_tag: "201610", serial_number: "LI9TFQIN19108348", status: "available" },
+    { loaner_id: 8, asset_tag: "400350", serial_number: "LI9TFQIN19248B14", status: "available" },
+    { loaner_id: 9, asset_tag: "800003", serial_number: "LI9TFQIN19108363", status: "available" },
+    { loaner_id: 10, asset_tag: "800004", serial_number: "LI9TFQIN191082DD", status: "available" },
+    { loaner_id: 11, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "available" },
+    { loaner_id: 12, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "available" },
+    { loaner_id: 13, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "available" },
   ]
   loaners.each { |loaner| Loaner.find_or_create_by!(loaner) }
 
   loans = [
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 2 },
-    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 3 },
-    { reason: 3, borrower_id: 3, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 4 },
-    { reason: 2, borrower_id: 4, loaned_at: DateTime.now - 4.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 5 },
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 5.days, due_date: self.loaned_at + 1.day, returned_at: DateTime.now, status: "returned", loaner_id: 6 },
-    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: self.loaned_at + 1.day,  status: "pending", loaner_id: 7 },
-    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: self.loaned_at + 1.day,  status: "pending", loaner_id: 8 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day,  status: "returned", loaner_id: 9 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day,  status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
-    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: self.loaned_at + 1.day, status: "returned", loaner_id: 7 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: DateTime.now, returned_at: DateTime.now, status: "returned", loaner_id: 2 },
+    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: DateTime.now, returned_at: DateTime.now, status: "returned", loaner_id: 3 },
+    { reason: 3, borrower_id: 3, loaned_at: DateTime.now - 3.days, due_date: DateTime.now, returned_at: DateTime.now, status: "returned", loaner_id: 4 },
+    { reason: 2, borrower_id: 4, loaned_at: DateTime.now - 4.days, due_date: DateTime.now, returned_at: DateTime.now, status: "returned", loaner_id: 5 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 5.days, due_date: DateTime.now, returned_at: DateTime.now, status: "returned", loaner_id: 6 },
+    { reason: 1, borrower_id: 1, loaned_at: DateTime.now - 1.day, due_date: DateTime.now + 1.day, status: "pending", loaner_id: 7 },
+    { reason: 2, borrower_id: 2, loaned_at: DateTime.now - 2.days, due_date: DateTime.now + 1.day, status: "pending", loaner_id: 8 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: DateTime.now + 1.day, status: "returned", loaner_id: 9 },
+    { reason: 3, borrower_id: 1, loaned_at: DateTime.now - 3.days, due_date: DateTime.now + 1.day, status: "returned", loaner_id: 7 },
+    # ... repeat as needed
   ]
   loans.each { |loan| Loan.find_or_create_by!(loan) }
 
@@ -81,6 +76,4 @@ if current_env == "development"
     user.password_confirmation = "password"
     user.role = "admin"
   end
-
-
 end
