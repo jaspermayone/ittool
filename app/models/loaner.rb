@@ -24,10 +24,22 @@
 #
 class AssetTagValidator < ActiveModel::Validator
   def validate(record)
-  unless record.asset_tag =~ /^[0-9]{6}$/
-    record.errors.add(:asset_tag, 'must be a 6-digit number')
+    # Increment a counter for validation attempts
+    StatsD.increment("asset_tag_validation_attempts")
+
+    if record.asset_tag.blank?
+      # Log and increment counter for blank asset tag errors
+      StatsD.increment("asset_tag_validation_blank_errors")
+      record.errors.add(:asset_tag, "can't be blank")
+    elsif record.asset_tag =~ /^[0-9]{6}$/
+      # Log successful validation
+      StatsD.increment("asset_tag_validation_success")
+    else
+      # Log and increment counter for format errors
+      StatsD.increment("asset_tag_validation_format_errors")
+      record.errors.add(:asset_tag, 'must be a 6-digit number')
+    end
   end
-end
 end
 
 class Loaner < ApplicationRecord
@@ -44,50 +56,58 @@ class Loaner < ApplicationRecord
     after_all_transitions :log_status_change
 
     event :loan do
-      # transitions from: :available, to: :loaned, guard: :pending_loan_present?
       transitions from: :available, to: :loaned
 
       after do
+        StatsD.increment("loaner.loaned")
         assign_current_loan
       end
     end
 
     event :return do
       transitions from: :loaned, to: :available
+
+      after do
+        StatsD.increment("loaner.returned")
+      end
     end
 
     event :disable do
       transitions from: [:available, :loaned], to: :disabled
+
+      after do
+        StatsD.increment("loaner.disabled")
+      end
     end
 
     event :enable do
       transitions from: :disabled, to: :available
+
+      after do
+        StatsD.increment("loaner.enabled")
+      end
     end
 
     event :broken do
       transitions from: [:available, :loaned], to: :maintenance
+
+      after do
+        StatsD.increment("loaner.broken")
+      end
     end
 
     event :repair do
       transitions from: :maintenance, to: :available
+
+      after do
+        StatsD.increment("loaner.repaired")
+      end
     end
   end
 
   def log_status_change
-    puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
-  end
-
-  # def pending_loan_present?
-  #   loans.pending.exists?
-  # end
-
-  def assign_current_loan
-    current_loan = loans.pending.first
-    if current_loan
-      self.current_loan_id = current_loan.id
-      save!
-      current_loan.loan!
-    end
+    StatsD.increment("loaner.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
+    Rails.logger.info "Changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
   validates :asset_tag, presence: true, uniqueness: true
@@ -105,6 +125,16 @@ class Loaner < ApplicationRecord
     # Find the maximum current loaner_id
     max_id = Loaner.maximum(:loaner_id) || 0
     self.loaner_id = max_id + 1
+    StatsD.increment("loaner.id_set")
   end
 
+  def assign_current_loan
+    current_loan = loans.pending.first
+    if current_loan
+      self.current_loan_id = current_loan.id
+      save!
+      StatsD.increment("loaner.current_loan_assigned")
+      current_loan.loan!
+    end
+  end
 end

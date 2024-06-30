@@ -32,7 +32,6 @@ class Loan < ApplicationRecord
   validates :reason, presence: true
 
   aasm :column => 'status' do
-
     state :pending, initial: true, display: "Pending"
     state :out, display: "Out"
     state :returned, display: "Returned"
@@ -43,19 +42,18 @@ class Loan < ApplicationRecord
       transitions from: :pending, to: :out
 
       after do
+        StatsD.increment("loan.loaned")
         self.update(loaned_at: Time.now)
-        # SHOWME: This is the time for the due date, confirm this with justin
         self.update(due_date: Date.today + 1.day)
 
         due_date_time = self.due_date.to_time
 
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 1.day).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 2.days).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 3.days).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 4.days).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 5.days).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 6.days).perform_later(self.id)
-        RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + 7.days).perform_later(self.id)
+        # Schedule reminder jobs
+        (1..7).each do |day|
+          StatsD.increment("loan.reminder_job_scheduled", tags: ["day:#{day}"])
+          RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + day.days).perform_later(self.id)
+        end
+        StatsD.increment("loan.borrower_unreturned_after_seven_days_job_scheduled")
         BorrowerUnreturnedAfterSevenDaysJob.set(wait_until: due_date_time + 8.days).perform_later(self.id)
       end
     end
@@ -64,14 +62,15 @@ class Loan < ApplicationRecord
       transitions from: :out, to: :returned
 
       after do
+        StatsD.increment("loan.returned")
         self.update(returned_at: Time.now)
       end
     end
-
   end
 
   def log_status_change
-    puts "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+    StatsD.increment("loan.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
+    Rails.logger.info "Changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
   enum reason: { charging: 1, device_repair: 2, forgot_at_home: 3 }

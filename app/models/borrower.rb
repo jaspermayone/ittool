@@ -12,7 +12,19 @@
 #
 class StudentEmailValidator < ActiveModel::Validator
   def validate(record)
-    unless record.email =~ /^[a-zA-Z][a-zA-Z]+[0-9]{4}@huusd\.org$/
+    # Increment a counter for validation attempts
+    StatsD.increment("email_validation_attempts")
+
+    if record.email.blank?
+      # Log and increment counter for blank email errors
+      StatsD.increment("email_validation_blank_errors")
+      record.errors.add(:email, "can't be blank")
+    elsif record.email =~ /^[a-zA-Z][a-zA-Z]+[0-9]{4}@huusd\.org$/
+      # Log successful validation
+      StatsD.increment("email_validation_success")
+    else
+      # Log and increment counter for format errors
+      StatsD.increment("email_validation_format_errors")
       record.errors.add(:email, 'must be in the format: first initial, last name, and 4-digit graduation year (e.g., jdoe2024@huusd.org)')
     end
   end
@@ -23,19 +35,25 @@ class Borrower < ApplicationRecord
   validates :email, presence: true, student_email: true
 
   before_create :parse_email
+  after_create :track_creation
+  after_update :track_update
+  after_destroy :track_destruction
 
   def full_name
+    StatsD.increment("borrower.full_name_accessed")
     "#{first_name} #{last_name}"
   end
 
   def name
+    StatsD.increment("borrower.name_accessed")
     "#{full_name}"
   end
 
   def grade_level
+    StatsD.increment("borrower.grade_level_calculated")
     current_month = Time.now.month
-  current_year = Time.now.year
-  graduation_year = self.graduation_year
+    current_year = Time.now.year
+    graduation_year = self.graduation_year
 
     if current_month <= 5
       academic_year = current_year - 1
@@ -44,21 +62,17 @@ class Borrower < ApplicationRecord
     end
 
     tmp_grade_level = academic_year - graduation_year
-    # if tmp_grade_level.abs is = 1, then the student is in 12th grade
-    # if tmp_grade_level.abs is = 2, then the student is in 11th grade
-    # etc
-
-    if tmp_grade_level.abs == 1
+    case tmp_grade_level.abs
+    when 1
       grade_level = 12
-    elsif tmp_grade_level.abs == 2
+    when 2
       grade_level = 11
-    elsif tmp_grade_level.abs == 3
+    when 3
       grade_level = 10
-    elsif tmp_grade_level.abs == 4
+    when 4
       grade_level = 9
-    elsif tmp_grade_level.abs == 5
+    when 5
       grade_level = 8
-    # add grade 7
     else
       grade_level = 0 # staff (should not error)
     end
@@ -66,14 +80,10 @@ class Borrower < ApplicationRecord
     grade_level
   end
 
-
   private
 
   def parse_email
-
-    # email comes in as "first initial, last name, and 4-digit graduation year @huusd.org", split out the parts
-    # and assign them to the appropriate attributes
-
+    StatsD.increment("borrower.parse_email_started")
     # Split the email address before the "@" symbol
     local_part = email.split('@').first
 
@@ -81,8 +91,22 @@ class Borrower < ApplicationRecord
     name_part, graduation_year = local_part.scan(/([a-zA-Z]+)(\d{4})/).flatten
 
     # Assign the appropriate attributes
-  self.first_name = name_part[0].capitalize
-  self.last_name = name_part[1..-1].capitalize
-  self.graduation_year = graduation_year
+    self.first_name = name_part[0].capitalize
+    self.last_name = name_part[1..-1].capitalize
+    self.graduation_year = graduation_year
+
+    StatsD.increment("borrower.parse_email_completed")
+  end
+
+  def track_creation
+    StatsD.increment("borrower.created")
+  end
+
+  def track_update
+    StatsD.increment("borrower.updated")
+  end
+
+  def track_destruction
+    StatsD.increment("borrower.deleted")
   end
 end

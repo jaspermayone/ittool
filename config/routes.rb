@@ -1,3 +1,7 @@
+# == Route Map
+#
+# D, [2024-06-29T22:50:42.483604 #96446] DEBUG -- : using default configuration
+
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
