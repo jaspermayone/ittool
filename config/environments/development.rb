@@ -45,7 +45,7 @@ Rails.application.configure do
 
   # config.action_mailer.delivery_method = :postmark
   # config.action_mailer.postmark_settings = {
-  #   api_token: Rails.application.credentials.postmark[:development][:api_token]
+  #   api_token: Rails.application.credentials.postmark[:api_token]
   # }
 
   # Print deprecation notices to the Rails logger.
