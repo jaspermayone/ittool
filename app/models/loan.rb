@@ -32,6 +32,12 @@ class Loan < ApplicationRecord
   belongs_to :loaner, optional: true  # Allow loaner to be optional
   validates :reason, presence: true
 
+  def extend
+    StatsD.increment("loan.extended")
+    self.due_date += 1.day
+    self.save
+  end
+
   aasm :column => 'status' do
     state :pending, initial: true, display: "Pending"
     state :out, display: "Out"
@@ -61,28 +67,23 @@ class Loan < ApplicationRecord
           self.update(due_date: Date.today + 1.day)
         end
 
-        due_date_time = self.due_date.to_time
+        due_date_time = self.due_date.present? ? self.due_date.to_time : nil
 
-        DisableDeviceJob.set(wait_until: due_date_time).perform_later(self.id)
-
-        # Schedule reminder jobs
+        if due_date_time != nil
+          DisableDeviceJob.set(wait_until: due_date_time).perform_later(self.id)
+          # Schedule reminder jobs
         (1..7).each do |day|
           StatsD.increment("loan.reminder_job_scheduled", tags: ["day:#{day}"])
           RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + day.days).perform_later(self.id)
         end
         StatsD.increment("loan.borrower_unreturned_after_seven_days_job_scheduled")
         BorrowerUnreturnedAfterSevenDaysJob.set(wait_until: due_date_time + 8.days).perform_later(self.id)
+        else
+          Rails.logger.warn "Due date is nil for loan #{self.id}. DisableDeviceJob will not be scheduled."
+        end
       end
     end
 
-    event :return do
-      transitions from: :out, to: :returned
-
-      after do
-        StatsD.increment("loan.returned")
-        self.update(returned_at: Time.now)
-      end
-    end
   end
 
   def log_status_change

@@ -68,6 +68,13 @@ class LoansController < ApplicationController
         redirect_to overview_path and return
       end
 
+      # check if loaner is marked as active
+      if loaner.active === false
+        StatsD.increment("loan_checkout_failed")
+        flash[:danger] = "Loaner is not active."
+        redirect_to overview_path and return
+      end
+
       unless loaner.available?
         StatsD.increment("loan_checkout_failed")
         flash[:danger] = "Loaner is not available."
@@ -140,6 +147,15 @@ class LoansController < ApplicationController
     end
 
     redirect_to loans_list_out_path
+  end
+
+  def repair
+    @laon = Loan.find(params[:id])
+
+    if @loan
+      @loan.repair!
+      flash[:notice] = 'Loan successfully marked as repaired.'
+    end
   end
 
   private

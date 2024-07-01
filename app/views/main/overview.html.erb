@@ -45,7 +45,12 @@
               <td>
                 <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
                   <%= form.hidden_field :loan_id, value: loan.id %>
-                  <%= form.text_field :asset_tag, placeholder: "Asset ID...", required: true, class: "input reason-input" %>
+                  <%= form.text_field :asset_tag,
+                    placeholder: "Asset ID...",
+                    required: true,
+                    class: "input reason-input",
+      pattern: "^[0-9]{6}$",
+                    title: "Please enter exactly 6 digits" %>
                   <%= form.submit "Check Out", class: "button is-small is-success" %>
                 <% end %>
               </td>
@@ -68,7 +73,7 @@
             <th>Asset Tag</th>
             <th>Email</th>
             <th>Loaned At</th>
-            <th>Due Date</th>
+            <th>Loan Reason</th>
             <th>Due In</th>
             <th>Actions</th>
           </tr>
@@ -84,7 +89,7 @@
                 <td><%= loaner.asset_tag %></td>
                 <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
                 <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-                <td><%= loan.due_date.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td><%= loan.reason.humanize %></td>
                 <td><%= time_until_due(loan.due_date) %></td>
                 <td>
                   <div class="btn-group">
@@ -98,48 +103,52 @@
                       <%= form.hidden_field :loan_id, value: loan.id %>
                       <%= form.submit "Check In", class: "button is-small is-danger ml-2" %>
                     <% end %>
-                    <%# <% if loan.reason === "device_repair" && loaner.status %> %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
+                    <% if loan.reason === "device_repair" && loan.borrowed_device_repaired === false %>
+                      <%= form_with url: repair_loan_path(id: loan.id), method: :post, local: true do |form| %>
+                        <%= form.hidden_field :loan_id, value: loan.id %>
+                        <%= form.submit "Repair", class: "button is-small is-info ml-2" %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
-<style>
-  #pendingtb {
-    height: 25vh;
-    overflow-y: auto;
-    margin-bottom: -6vh;
-  }
+  <style>
+    #pendingtb {
+      height: 25vh;
+      overflow-y: auto;
+      margin-bottom: -6vh;
+    }
 
-  #outtb {
-    height: 37vh;
-    overflow-y: auto;
-  }
+    #outtb {
+      height: 37vh;
+      overflow-y: auto;
+    }
 
-  .table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background: white;
-  }
+    .table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: white;
+    }
 
-  .reason-input {
-    border: 1.5px solid #6dc492;
-    background-color: #f9f9f9;
-    border-radius: 4px;
-    max-width: 120px;
-    max-height: 30px;
-  }
+    .reason-input {
+      border: 1.5px solid #6dc492;
+      background-color: #f9f9f9;
+      border-radius: 4px;
+      max-width: 120px;
+      max-height: 30px;
+    }
 
-  #bn {
-    margin-right: 10px;
-    margin-left: 10px;
-  }
-</style>
+    #bn {
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+  </style>
 </div>
