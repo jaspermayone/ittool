@@ -50,6 +50,15 @@ class Borrower < ApplicationRecord
     "#{full_name}"
   end
 
+  def flame
+    StatsD.increment("borrower.flame_accessed")
+    if flagged
+      "🚩 #{name}"
+    else
+      name
+    end
+  end
+
   def grade_level
     StatsD.increment("borrower.grade_level_calculated")
     current_month = Time.now.month

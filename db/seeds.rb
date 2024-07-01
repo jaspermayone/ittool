@@ -24,8 +24,8 @@ if current_env == "development"
     { first_name: "C", last_name: "Brown", email: "cbrown2028@huusd.org", graduation_year: 2028 },
     { first_name: "D", last_name: "Davis", email: "ddavis2028@huusd.org", graduation_year: 2028 },
     { first_name: "E", last_name: "Miller", email: "emiller2028@huusd.org", graduation_year: 2028 },
-    { first_name: "F", last_name: "Wilson", email: "fwilson2028@huusd.org", graduation_year: 2028 },
-    { first_name: "G", last_name: "Moore", email: "gmoore2028@huusd.org", graduation_year: 2028 },
+    { first_name: "F", last_name: "Wilson", email: "fwilson2028@huusd.org", graduation_year: 2028, flagged: true},
+    { first_name: "G", last_name: "Moore", email: "gmoore2028@huusd.org", graduation_year: 2028, flagged: true },
   ]
   borrowers.each { |borrower| Borrower.find_or_create_by!(borrower) }
 

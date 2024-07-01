@@ -23,6 +23,7 @@
       <table class="table is-striped is-hoverable">
         <thead>
           <tr>
+            <th>🚩</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -36,6 +37,7 @@
           <%# <% @borrowers.each do |borrower| %>
             <% @borrowers.sort_by { |borrower| -borrower.loans.count }.each do |borrower| %>
               <tr>
+                <td><%= borrower.flagged ? "🚩" : "" %></td>
                 <td><%= borrower.first_name %></td>
                 <td><%= borrower.last_name %></td>
                 <td><%= borrower.email %></td>

@@ -4,7 +4,9 @@
 
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <h1>Borrower Details</h1>
+    <u>
+      <h3>Borrower Details: </h3>
+    </u>
 
     <p>
       <strong>First Name:</strong>
@@ -24,6 +26,11 @@
     <p>
       <strong>Graduation Year:</strong>
       <%= @borrower.graduation_year %>
+    </p>
+
+    <p>
+      <strong>Flagged:</strong>
+      <%= @borrower.flagged ? 'Yes' : 'No' %>
     </p>
 
     <p>
@@ -68,7 +75,7 @@
 
   <style>
     .table-container {
-      height: 36vh;
+      height: 32vh;
       overflow-y: auto;
       border: 1px solid #e3e3e3;
       border-radius: 5px;
