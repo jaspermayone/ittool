@@ -49,6 +49,27 @@ class Loaner < ApplicationRecord
 
   before_create :set_loaner_id
 
+  def chrome_device
+    GoogleService.new.get_chrome_device(self.serial_number)
+  end
+
+  def chrome_status
+    chrome_device.status
+  end
+
+  def chrome_status_update(status)
+    chrome_device.status = status
+    GoogleService.new.update_chrome_device(self.serial_number, chrome_device)
+  end
+
+  def chrome_disable
+    chrome_status_update("DISABLED")
+  end
+
+  def chrome_enable
+    chrome_status_update("ACTIVE")
+  end
+
   aasm column: 'status' do
     state :available, initial: true, display: "Available"
     state :loaned, display: "Loaned"
@@ -78,6 +99,7 @@ class Loaner < ApplicationRecord
       transitions from: [:available, :loaned], to: :disabled
 
       after do
+        chrome_disable()
         StatsD.increment("loaner.disabled")
       end
     end
@@ -86,6 +108,7 @@ class Loaner < ApplicationRecord
       transitions from: :disabled, to: :available
 
       after do
+        chrome_enable()
         StatsD.increment("loaner.enabled")
       end
     end

@@ -42,45 +42,45 @@ class GoogleService
     # https://developers.google.com/admin-sdk/directory/v1/reference/chromeosdevices/list
   end
 
-  def get_chrome_device(device_id)
-    client.get_chromeosdevice(customer: "my_customer", deviceId: device_id)
+  def get_chrome_device(serialNumber)
+    client.get_chromeosdevice(customer: "my_customer", serialNumber: serialNumber)
 
     # This will return a single ChromeOS device
     # https://developers.google.com/admin-sdk/directory/v1/reference/chromeosdevices/get
   end
 
-  def update_chrome_device(device_id, device)
-    client.update_chromeosdevice(customer: "my_customer", deviceId: device_id, chrome_os_device_object: device)
+  def update_chrome_device(serialNumber, device)
+    client.update_chromeosdevice(customer: "my_customer", serialNumber: serialNumber, chrome_os_device_object: device)
 
     # This will update a ChromeOS device
     # https://developers.google.com/admin-sdk/directory/v1/reference/chromeosdevices/update
   end
 
-  def disable_chrome_device(device_id)
-    client.update_chromeosdevice(customer: "my_customer", deviceId: device_id, chrome_os_device_object: {status: "DISABLED"})
+  def disable_chrome_device(serialNumber)
+    client.update_chromeosdevice(customer: "my_customer", serialNumber: serialNumber, chrome_os_device_object: {status: "DISABLED"})
 
     # This will disable a ChromeOS device
     # https://developers.google.com/admin-sdk/directory/v1/reference/chromeosdevices/update
   end
 
-  def enable_chrome_device(device_id)
-    client.update_chromeosdevice(customer: "my_customer", deviceId: device_id, chrome_os_device_object: {status: "ACTIVE"})
+  def enable_chrome_device(serialNumber)
+    client.update_chromeosdevice(customer: "my_customer", serialNumber: serialNumber, chrome_os_device_object: {status: "ACTIVE"})
 
     # This will enable a ChromeOS device
     # https://developers.google.com/admin-sdk/directory/v1/reference/chromeosdevices/update
   end
 
-def toggle_chrome_device_status(device_id)
-    device = get_chrome_device(device_id)
+def toggle_chrome_device_status(serialNumber)
+    device = get_chrome_device(serialNumber)
     if device.status == "ACTIVE"
-      disable_chrome_device(device_id)
+      disable_chrome_device(serialNumber)
     else
-      enable_chrome_device(device_id)
+      enable_chrome_device(serialNumber)
     end
 end
 
-def device_status(device_id)
-    device = get_chrome_device(device_id)
+def device_status(serialNumber)
+    device = get_chrome_device(serialNumber)
     device.status
 end
 

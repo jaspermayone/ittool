@@ -124,6 +124,11 @@ class LoansController < ApplicationController
 
     if @loan
       # Example logic: extend the due date by 1 day
+
+      if @loan.status === 'disabled'
+       @loan.enable!
+      end
+
       @loan.due_date += 1.day
       if @loan.save
         flash[:notice] = 'Loan successfully extended.'

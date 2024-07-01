@@ -49,6 +49,8 @@ class Loan < ApplicationRecord
 
         due_date_time = self.due_date.to_time
 
+        DisableDeviceJob.set(wait_until: due_date_time).perform_later(self.id)
+
         # Schedule reminder jobs
         (1..7).each do |day|
           StatsD.increment("loan.reminder_job_scheduled", tags: ["day:#{day}"])
