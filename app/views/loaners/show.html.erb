@@ -1,10 +1,14 @@
+<% content_for :title do %>
+  <%= @loaner.asset_tag %> - <%= @loaner.serial_number %>
+<% end %>
+
 <div class="container-responsive px-3 pt-2">
   <div class="box">
 
     <div class="row mb-1">
       <div class="col">
         <u>
-          <h3>Loaner Details</h3>
+          <h3>Loaner Details: </h3>
         </u>
       </div>
       <div class="col-auto">
@@ -12,11 +16,19 @@
       </div>
     </div>
 
-    <table class="table">
+    <table class="table table-sm">
       <tbody>
         <tr>
-          <th>Loaner ID</th>
+          <th>Is Active?</th>
+          <td><%= @loaner.active ? "Yes" : "No" %></td>
+        </tr>
+        <tr>
+          <th>Unique Loaner ID</th>
           <td><%= @loaner.loaner_id %></td>
+        </tr>
+        <tr>
+          <th>Friendly ID</th>
+          <td><%= @loaner.freindly_id %></td>
         </tr>
         <tr>
           <th>Status</th>

@@ -1,3 +1,5 @@
+<% content_for :title, "Loaners List" %>
+
 <div class="container-responsive px-3 pt-3">
   <div class="box">
     <div class="row mb-3 align-items-center">
@@ -10,16 +12,22 @@
         <label for="status-filter" class="mr-2 mb-0">Filter by Status:</label>
         <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control' %>
       </div>
+      <div id="fil" class="col-auto d-flex align-items-center ml-3">
+        <label for="active-filter" class="mr-2 mb-0">Is Active?:</label>
+        <%= select_tag 'active-filter', options_for_select(['All', 'Yes', 'No'], 'All'), class: 'form-control' %>
+      </div>
       <div class="col-auto">
         <%= link_to 'Back to Overview', overview_path, class: 'btn btn-primary' %>
       </div>
     </div>
 
     <div class="table-responsive">
-      <table class="table is-bordered" id="loaners-table">
+      <table class="table is-outlined" id="loaners-table">
         <thead>
           <tr>
-            <th class="id-col">ID</th>
+            <th class="id-col">U-ID</th>
+            <th class="id-col">F-ID</th>
+            <th class="">Is Active?</th>
             <th class="status-col">Status</th>
             <th class="asset-tag-col">Asset Tag</th>
             <th class="serial-num-col">Serial Number</th>
@@ -37,8 +45,13 @@
                           when 'maintenance' then 'maintenance'
                           else ''
                           end %>
+            <% row_class += ' inactive' unless loaner.active %>
             <tr class="<%= row_class %>">
               <td><%= loaner.loaner_id %></td>
+              <td><%= loaner.freindly_id %></td>
+              <td class="<%= loaner.active ? 'active-yes' : 'active-no' %>">
+                <%= loaner.active ? "✅ Yes" : "❌ No" %>
+              </td>
               <td><%= loaner.status.capitalize %></td>
               <td><%= link_to loaner.asset_tag, loaner_path(loaner), class: "lnk" %></td>
               <td><%= link_to loaner.serial_number, loaner_path(loaner), class: "lnk" %></td>
@@ -78,7 +91,7 @@
   }
 
   .id-col {
-    width: 50px;
+    width: 65px;
   }
 
   .status-col {
@@ -113,10 +126,17 @@
     background-color: #cce5ff;
   }
 
+  .inactive {
+    background-color: #6c757d;
+  }
+
   #fil {
     border: 1px dashed #902517;
     border-radius: 5px;
-    padding: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .lnk {
@@ -129,37 +149,37 @@
     margin-left: 5px;
   }
 
-  label[for="status-filter"] {
+  label[for="status-filter"], label[for="active-filter"] {
     white-space: nowrap;
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const filterSelect = document.getElementById('status-filter');
+    const statusFilter = document.getElementById('status-filter');
+    const activeFilter = document.getElementById('active-filter');
     const rows = document.querySelectorAll('#loaners-table tbody tr');
 
-    filterSelect.addEventListener('change', function() {
-      const selectedStatus = filterSelect.value.toLowerCase();
+    function applyFilters() {
+      const selectedStatus = statusFilter.value.toLowerCase();
+      const selectedActive = activeFilter.value.toLowerCase();
 
       rows.forEach(row => {
-        const status = row.classList.contains(selectedStatus);
-        if (selectedStatus === 'all' || status) {
+        const statusMatch = selectedStatus === 'all' || row.classList.contains(selectedStatus);
+        const isActive = row.querySelector('.active-yes') ? 'yes' : 'no';
+        const activeMatch = selectedActive === 'all' || isActive === selectedActive;
+
+        if (statusMatch && activeMatch) {
           row.style.display = '';
         } else {
           row.style.display = 'none';
         }
       });
-    });
-
-    function applyStatusColors() {
-      rows.forEach(row => {
-        const status = row.classList[0];
-        row.classList.remove('available', 'loaned', 'disabled', 'maintenance');
-        row.classList.add(status);
-      });
     }
 
-    applyStatusColors();
+    statusFilter.addEventListener('change', applyFilters);
+    activeFilter.addEventListener('change', applyFilters);
+
+    applyFilters();
   });
 </script>

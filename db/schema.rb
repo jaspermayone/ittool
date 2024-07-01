@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_30_013410) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_01_141133) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -62,6 +62,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_30_013410) do
     t.integer "graduation_year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "flagged"
   end
 
   create_table "console1984_commands", force: :cascade do |t|
@@ -106,6 +107,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_30_013410) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "current_loan_id"
+    t.integer "freindly_id"
+    t.boolean "active"
     t.index ["asset_tag"], name: "index_loaners_on_asset_tag"
     t.index ["current_loan_id"], name: "index_loaners_on_current_loan_id"
     t.index ["loaner_id"], name: "index_loaners_on_loaner_id"
@@ -130,6 +133,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_30_013410) do
     t.datetime "updated_at", null: false
     t.integer "loaner_id"
     t.date "due_date"
+    t.boolean "borrowed_device_repaired"
     t.index ["borrower_id"], name: "index_loans_on_borrower_id"
     t.index ["loaner_id"], name: "index_loans_on_loaner_id"
     t.index ["status"], name: "index_loans_on_status"

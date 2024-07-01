@@ -5,6 +5,7 @@
 #  id              :integer          not null, primary key
 #  email           :string
 #  first_name      :string
+#  flagged         :boolean
 #  graduation_year :integer
 #  last_name       :string
 #  created_at      :datetime         not null

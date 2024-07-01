@@ -1,5 +1,5 @@
 
-when user checks out a loaner, automatically assign it to them in IIQ
+# NOTES
 
 auto lock/unlock device on assignment
 
@@ -21,3 +21,8 @@ only let person have one loaner out at a time
 add freindly id to loan so that 1-10 can be swapped to new devices while preserving history
 
 add "setup page" that only works for jasper to imput start data
+
+auto print tags using <https://github.com/hackclub/ysws-receipt-printer/blob/main/main.py>
+hould work with any USB printer that has an 80mm paper spool and Linux compatibility.
+
+loan extend function for techs

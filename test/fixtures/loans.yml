@@ -2,16 +2,17 @@
 #
 # Table name: loans
 #
-#  id          :integer          not null, primary key
-#  due_date    :date
-#  loaned_at   :datetime
-#  reason      :integer
-#  returned_at :datetime
-#  status      :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  borrower_id :integer          not null
-#  loaner_id   :integer
+#  id                       :integer          not null, primary key
+#  borrowed_device_repaired :boolean
+#  due_date                 :date
+#  loaned_at                :datetime
+#  reason                   :integer
+#  returned_at              :datetime
+#  status                   :string
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  borrower_id              :integer          not null
+#  loaner_id                :integer
 #
 # Indexes
 #

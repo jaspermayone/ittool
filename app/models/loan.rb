@@ -2,16 +2,17 @@
 #
 # Table name: loans
 #
-#  id          :integer          not null, primary key
-#  due_date    :date
-#  loaned_at   :datetime
-#  reason      :integer
-#  returned_at :datetime
-#  status      :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  borrower_id :integer          not null
-#  loaner_id   :integer
+#  id                       :integer          not null, primary key
+#  borrowed_device_repaired :boolean
+#  due_date                 :date
+#  loaned_at                :datetime
+#  reason                   :integer
+#  returned_at              :datetime
+#  status                   :string
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  borrower_id              :integer          not null
+#  loaner_id                :integer
 #
 # Indexes
 #
@@ -74,4 +75,12 @@ class Loan < ApplicationRecord
   end
 
   enum reason: { charging: 1, device_repair: 2, forgot_at_home: 3 }
+
+  # if the loaner reason is set to device_repair then borrowed_device_repaired should be set to true when the loan is created (but not on save)
+  before_create :set_borrowed_device_repaired
+
+  def set_borrowed_device_repaired
+    self.borrowed_device_repaired = true if self.reason == "device_repair"
+  end
+
 end

@@ -30,19 +30,19 @@ if current_env == "development"
   borrowers.each { |borrower| Borrower.find_or_create_by!(borrower) }
 
   loaners = [
-    { loaner_id: 1, asset_tag: "800001", serial_number: "LI9TFQIN19248AFF", status: "available" },
-    { loaner_id: 2, asset_tag: "201333", serial_number: "LI9TFQIN19108128", status: "loaned" },
-    { loaner_id: 3, asset_tag: "201535", serial_number: "LI9TFQIN19108328", status: "disabled" },
-    { loaner_id: 4, asset_tag: "201524", serial_number: "LI9TFQIN19108343", status: "maintenance" },
-    { loaner_id: 5, asset_tag: "800002", serial_number: "LI9TFQIN19248E6B", status: "available" },
-    { loaner_id: 6, asset_tag: "201552", serial_number: "LI9TFQIN19108248", status: "available" },
-    { loaner_id: 7, asset_tag: "201610", serial_number: "LI9TFQIN19108348", status: "available" },
-    { loaner_id: 8, asset_tag: "400350", serial_number: "LI9TFQIN19248B14", status: "available" },
-    { loaner_id: 9, asset_tag: "800003", serial_number: "LI9TFQIN19108363", status: "available" },
-    { loaner_id: 10, asset_tag: "800004", serial_number: "LI9TFQIN191082DD", status: "available" },
-    { loaner_id: 11, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "available" },
-    { loaner_id: 12, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "available" },
-    { loaner_id: 13, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "available" },
+    { loaner_id: 1, freindly_id: 1, active: true, asset_tag: "800001", serial_number: "LI9TFQIN19248AFF", status: "available" },
+    { loaner_id: 2, freindly_id: 2, active: true, asset_tag: "201333", serial_number: "LI9TFQIN19108128", status: "loaned" },
+    { loaner_id: 3, freindly_id: 3, active: true, asset_tag: "201535", serial_number: "LI9TFQIN19108328", status: "disabled" },
+    { loaner_id: 4, freindly_id: 4, active: true, asset_tag: "201524", serial_number: "LI9TFQIN19108343", status: "maintenance" },
+    { loaner_id: 5, freindly_id: 5, active: true, asset_tag: "800002", serial_number: "LI9TFQIN19248E6B", status: "available" },
+    { loaner_id: 6, freindly_id: 6, active: true, asset_tag: "201552", serial_number: "LI9TFQIN19108248", status: "available" },
+    { loaner_id: 7, freindly_id: 7, active: true, asset_tag: "201610", serial_number: "LI9TFQIN19108348", status: "available" },
+    { loaner_id: 8, freindly_id: 8, active: true, asset_tag: "400350", serial_number: "LI9TFQIN19248B14", status: "available" },
+    { loaner_id: 9, freindly_id: 9, active: true, asset_tag: "800003", serial_number: "LI9TFQIN19108363", status: "available" },
+    { loaner_id: 10, freindly_id: 10, active: true, asset_tag: "800004", serial_number: "LI9TFQIN191082DD", status: "available" },
+    { loaner_id: 11, freindly_id: 10, active: false, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "available" },
+    { loaner_id: 12, freindly_id: 9, active: false, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "available" },
+    { loaner_id: 13, freindly_id: 8, active: false, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "available" },
   ]
   loaners.each { |loaner| Loaner.find_or_create_by!(loaner) }
 

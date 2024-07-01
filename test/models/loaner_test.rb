@@ -3,12 +3,14 @@
 # Table name: loaners
 #
 #  id              :integer          not null, primary key
+#  active          :boolean
 #  asset_tag       :string
 #  serial_number   :string
 #  status          :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  current_loan_id :integer
+#  freindly_id     :integer
 #  loaner_id       :integer
 #
 # Indexes
