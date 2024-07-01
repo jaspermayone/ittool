@@ -28,6 +28,8 @@ Rails.application.routes.draw do
   get 'loans/list'
   get 'loans/list/pending', to: 'loans#pending'
   get 'loans/list/out', to: 'loans#out'
+  post 'loans/:id/extend', to: 'loans#extend', as: 'extend_loan'
+
 
   get 'loaners' => 'loaners#list'
   get 'loaners/list', to: redirect('loaners')

@@ -8,6 +8,14 @@ def relative_timestamp(time, options = {})
   ontent_tag :span, "#{options[:prefix]}#{time_ago_in_words time} ago#{options[:suffix]}", options.merge(title: time)
 end
 
+def time_until_due(due_date)
+  if due_date < Time.current
+    "#{distance_of_time_in_words(due_date, Time.current)} overdue"
+  else
+    "#{distance_of_time_in_words(Time.current, due_date)}"
+  end
+end
+
 def help_message
   content_tag :span, "Email #{help_email} for support.".html_safe
 end

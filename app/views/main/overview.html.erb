@@ -68,7 +68,8 @@
             <th>Asset Tag</th>
             <th>Email</th>
             <th>Loaned At</th>
-            <th>Time Before Due</th>
+            <th>Due Date</th>
+            <th>Due In</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -83,12 +84,15 @@
                 <td><%= loaner.asset_tag %></td>
                 <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
                 <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-                <td><%= time_ago_in_words(loan.loaned_at) %> ago</td>
+                <td><%= loan.due_date.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td><%= time_until_due(loan.due_date) %></td>
                 <td>
                   <div class="btn-group">
-                    <%= form_with url: loan_path(id: loan.id), method: :post, local: true do |form| %>
-                      <%= form.hidden_field :loan_id, value: loan.id %>
-                      <%= form.submit "Extend Loan", class: "button is-small is-warning" %>
+                    <% if loan.due_date < Time.current %>
+                      <%= form_with url: extend_loan_path(id: loan.id), method: :post, local: true, class: "mr-2" do |form| %>
+                        <%= form.hidden_field :loan_id, value: loan.id %>
+                        <%= form.submit "Extend Loan", class: "button is-small is-warning" %>
+                      <% end %>
                     <% end %>
                     <%= form_with url: checkin_loan_path(id: loan.id), method: :post, local: true do |form| %>
                       <%= form.hidden_field :loan_id, value: loan.id %>

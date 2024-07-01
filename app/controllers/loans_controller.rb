@@ -119,6 +119,24 @@ class LoansController < ApplicationController
     end
   end
 
+  def extend
+    @loan = Loan.find(params[:id])
+
+    if @loan
+      # Example logic: extend the due date by 1 day
+      @loan.due_date += 1.day
+      if @loan.save
+        flash[:notice] = 'Loan successfully extended.'
+      else
+        flash[:alert] = 'Failed to extend the loan.'
+      end
+    else
+      flash[:alert] = 'Loan not found.'
+    end
+
+    redirect_to loans_list_out_path
+  end
+
   private
 
   def loan_params
