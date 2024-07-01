@@ -1,10 +1,6 @@
 
 # NOTES
 
-auto lock/unlock device on assignment
-
-auto lock after a few hours and remind for charging
-
 repair mark as done before reminding
 
 add staff loaner system

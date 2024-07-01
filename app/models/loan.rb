@@ -45,7 +45,21 @@ class Loan < ApplicationRecord
       after do
         StatsD.increment("loan.loaned")
         self.update(loaned_at: Time.now)
-        self.update(due_date: Date.today + 1.day)
+
+        if self.reason == "device_repair"
+          StatsD.increment("loan.reason.device_repair")
+
+        elsif self.reason == "charging"
+          StatsD.increment("loan.reason.charging")
+          self.update(due_date: Date.today + 2.hours)
+
+        elsif self.reason == "forgot_at_home"
+          StatsD.increment("loan.reason.forgot_at_home")
+          self.update(due_date: Date.today + 1.day)
+        else
+          StatsD.increment("loan.reason.unknown")
+          self.update(due_date: Date.today + 1.day)
+        end
 
         due_date_time = self.due_date.to_time
 

@@ -98,46 +98,48 @@
                       <%= form.hidden_field :loan_id, value: loan.id %>
                       <%= form.submit "Check In", class: "button is-small is-danger ml-2" %>
                     <% end %>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
+                    <%# <% if loan.reason === "device_repair" && loaner.status %> %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
           <% end %>
-        </tbody>
-      </table>
-    </div>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+</div>
 
-  <style>
-    #pendingtb {
-      height: 25vh;
-      overflow-y: auto;
-      margin-bottom: -6vh;
-    }
+<style>
+  #pendingtb {
+    height: 25vh;
+    overflow-y: auto;
+    margin-bottom: -6vh;
+  }
 
-    #outtb {
-      height: 37vh;
-      overflow-y: auto;
-    }
+  #outtb {
+    height: 37vh;
+    overflow-y: auto;
+  }
 
-    .table thead th {
-      position: sticky;
-      top: 0;
-      z-index: 1;
-      background: white;
-    }
+  .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white;
+  }
 
-    .reason-input {
-      border: 1.5px solid #6dc492;
-      background-color: #f9f9f9;
-      border-radius: 4px;
-      max-width: 120px;
-      max-height: 30px;
-    }
+  .reason-input {
+    border: 1.5px solid #6dc492;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    max-width: 120px;
+    max-height: 30px;
+  }
 
-    #bn {
-      margin-right: 10px;
-      margin-left: 10px;
-    }
-  </style>
+  #bn {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+</style>
 </div>
