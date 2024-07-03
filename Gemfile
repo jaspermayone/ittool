@@ -98,7 +98,7 @@ group :development do
   gem "pre-commit", require: false
 
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', '~> 2.0'
 end
 
 group :test do
