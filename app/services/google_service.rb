@@ -1,3 +1,11 @@
+# API Endpoint docs that might be useful:
+#
+# - https://developers.google.com/admin-sdk/directory/reference/rest/v1/chromeosdevices/update
+# - https://developers.google.com/admin-sdk/directory/v1/guides/manage-chrome-devices
+# - https://developers.google.com/admin-sdk/directory/reference/rest/v1/customer.devices.chromeos/batchChangeStatus
+#
+
+
 class GoogleService
   include Singleton
 
