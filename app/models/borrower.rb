@@ -35,10 +35,10 @@ class Borrower < ApplicationRecord
   has_many :loans
   validates :email, presence: true, student_email: true
 
-  before_create :parse_email
-  after_create :track_creation
-  after_update :track_update
-  after_destroy :track_destruction
+  before_create :measure_parse_email
+  after_create :measure_creation
+  after_update :measure_update
+  after_destroy :measure_destruction
 
   def full_name
     StatsD.increment("borrower.full_name_accessed")
@@ -92,6 +92,12 @@ class Borrower < ApplicationRecord
 
   private
 
+  def measure_parse_email
+    StatsD.measure("borrower.parse_email_time") do
+      parse_email
+    end
+  end
+
   def parse_email
     StatsD.increment("borrower.parse_email_started")
     # Split the email address before the "@" symbol
@@ -108,12 +114,30 @@ class Borrower < ApplicationRecord
     StatsD.increment("borrower.parse_email_completed")
   end
 
+  def measure_creation
+    StatsD.measure("borrower.creation_time") do
+      track_creation
+    end
+  end
+
   def track_creation
     StatsD.increment("borrower.created")
   end
 
+  def measure_update
+    StatsD.measure("borrower.update_time") do
+      track_update
+    end
+  end
+
   def track_update
     StatsD.increment("borrower.updated")
+  end
+
+  def measure_destruction
+    StatsD.measure("borrower.destruction_time") do
+      track_destruction
+    end
   end
 
   def track_destruction
