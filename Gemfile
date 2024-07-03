@@ -119,5 +119,5 @@ gem "solid_queue"
 gem 'aasm'
 gem 'csv'
 gem 'postmark-rails'
-gem "statsd-instrument", "~> 3.5", ">= 3.5.12" # For reporting to jasper's Grafana
+gem "statsd-instrument", "~> 3.8" # For reporting to jasper's Grafana
 gem 'google-apis-admin_directory_v1', '~> 0.57.0'
