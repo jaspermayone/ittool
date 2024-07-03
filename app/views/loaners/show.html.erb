@@ -2,63 +2,64 @@
   <%= @loaner.asset_tag %> - <%= @loaner.serial_number %>
 <% end %>
 
-<div class="container-responsive px-3 pt-2">
+<div class="container-responsive px-3 pt-3">
   <div class="box">
-
-    <div class="row mb-1">
-      <div class="col">
-        <u>
-          <h3>Loaner Details: </h3>
-        </u>
-      </div>
-      <div class="col-auto">
-        <%= link_to 'Go Back', loaners_path, class: 'button is-small is-link' %>
-      </div>
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <h3 class="underline mb-0">Loaner Details:</h3>
+      <%= link_to 'Go Back', loaners_path, class: 'button is-small is-link' %>
     </div>
 
-    <table class="table table-sm">
-      <tbody>
-        <tr>
-          <th>Is Active?</th>
-          <td><%= @loaner.active ? "Yes" : "No" %></td>
-        </tr>
-        <tr>
-          <th>Unique Loaner ID</th>
-          <td><%= @loaner.loaner_id %></td>
-        </tr>
-        <tr>
-          <th>Friendly ID</th>
-          <td><%= @loaner.freindly_id %></td>
-        </tr>
-        <tr>
-          <th>Status</th>
-          <td><%= @loaner.status.capitalize %></td>
-        </tr>
-        <tr>
-          <th>Asset Tag</th>
-          <td><%= @loaner.asset_tag %></td>
-        </tr>
-        <tr>
-          <th>Serial Number</th>
-          <td><%= @loaner.serial_number %></td>
-        </tr>
-        <tr>
-          <th>Loan Count</th>
-          <td><%= @loaner.loans.count %></td>
-        </tr>
-        <tr>
-          <th>Created At</th>
-          <td><%= @loaner.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="loaner-details">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="detail-item mb-2">
+            <strong>Is Active?</strong>
+            <span><%= @loaner.active ? "Yes" : "No" %></span>
+          </div>
+          <div class="detail-item mb-2">
+            <strong>Unique Loaner ID</strong>
+            <span><%= @loaner.loaner_id %></span>
+          </div>
+          <div class="detail-item mb-2">
+            <strong>Friendly ID</strong>
+            <span><%= @loaner.freindly_id %></span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-item mb-2">
+            <strong>Status</strong>
+            <span><%= @loaner.status.capitalize %></span>
+          </div>
+          <div class="detail-item mb-2">
+            <strong>Asset Tag</strong>
+            <span><%= @loaner.asset_tag %></span>
+          </div>
+          <div class="detail-item">
+            <strong>Serial Number</strong>
+            <span><%= @loaner.serial_number %></span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-item">
+            <strong>Loan Count</strong>
+            <span><%= @loaner.loans.count %></span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="cat">
+            <strong>Created At</strong>
+            <span><%= @loaner.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="box mt-4">
+  <div class="box mt-3">
     <u>
       <h3>Loan History</h3>
     </u>
-    <div class="table-container">
+    <div class="table-container" id="lh">
       <table class="table is-outlined is-hoverable">
         <thead>
           <tr>
@@ -99,4 +100,43 @@
     z-index: 1;
     background: white;
   }
+
+  #lh {
+    height: 43vh;
+  }
+
+  .cat {
+          display: flex;
+      justify-content: space-between;
+      padding: 0.5rem;
+      border: 1px solid #e3e3e3;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+  }
+
+   .underline {
+      text-decoration: underline;
+    }
+    .loaner-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem;
+      border: 1px solid #e3e3e3;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .detail-item strong {
+      width: 50%;
+    }
+    .detail-item span {
+      width: 50%;
+      text-align: right;
+    }
 </style>

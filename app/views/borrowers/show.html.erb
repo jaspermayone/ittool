@@ -1,56 +1,29 @@
 <% content_for :title do %>
-  <%= @borrower.name%> - <%= @borrower.email %>
+  <%= @borrower.name %> - <%= @borrower.email %>
 <% end %>
 
 <div class="container-responsive px-3 pt-3">
   <div class="box">
-    <u>
-      <h3>Borrower Details: </h3>
-    </u>
+    <h3 class="underline mb-3">Borrower Details:</h3>
 
-    <p>
-      <strong>First Name:</strong>
-      <%= @borrower.first_name %>
-    </p>
+    <div class="row">
+      <div class="col-md-6">
+        <p><strong>Name:</strong> <%= @borrower.flame %></p>
+        <p><strong>Email:</strong> <%= @borrower.email %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Flagged:</strong> <%= @borrower.flagged ? 'Yes' : 'No' %></p>
+        <p><strong>Has Loan Out Currently:</strong> <%= @borrower.loans.any? { |loan| loan.status == 'loaned' } ? 'Yes' : 'No' %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>User Created At:</strong> <%= @borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Historical Loan Count:</strong> <%= @borrower.loans.count %></p>
+      </div>
+    </div>
 
-    <p>
-      <strong>Last Name:</strong>
-      <%= @borrower.last_name %>
-    </p>
-
-    <p>
-      <strong>Email:</strong>
-      <%= @borrower.email %>
-    </p>
-
-    <p>
-      <strong>Graduation Year:</strong>
-      <%= @borrower.graduation_year %>
-    </p>
-
-    <p>
-      <strong>Flagged:</strong>
-      <%= @borrower.flagged ? 'Yes' : 'No' %>
-    </p>
-
-    <p>
-      <strong>Has Loan Out Currently</strong>
-      <%= @borrower.loans.any? { |loan| loan.status == 'loaned' } ? 'Yes' : 'No' %>
-    </p>
-
-    <p>
-      <strong>User Created At:</strong>
-      <%= @borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %>
-    </p>
-
-    <%# Add a loaners count to display the number of loans %>
-    <p>
-      <strong>Historical Loan Count:</strong>
-      <%= @borrower.loans.count %>
-    </p>
-
-    <%# add a table with the historical loans data %>
-    <div class="table-container">
+    <div class="table-container mt-2">
       <table class="table is-striped is-hoverable">
         <thead>
           <tr>
@@ -75,7 +48,7 @@
 
   <style>
     .table-container {
-      height: 32vh;
+      height: 51vh;
       overflow-y: auto;
       border: 1px solid #e3e3e3;
       border-radius: 5px;
@@ -86,4 +59,9 @@
       top: 0;
       background-color: white;
     }
+
+    .underline {
+      text-decoration: underline;
+    }
   </style>
+</div>
