@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.configure do
   # StatsD config here
   ENV["STATSD_ENV"] = "production" # This won't send data unless set to production

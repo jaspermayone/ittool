@@ -149,19 +149,22 @@ class Loaner < ApplicationRecord
   private
 
   def set_loaner_id
-    # Find the maximum current loaner_id
-    max_id = Loaner.maximum(:loaner_id) || 0
-    self.loaner_id = max_id + 1
-    StatsD.increment("loaner.id_set")
+    StatsD.measure("loaner.set_loaner_id_time") do
+      max_id = Loaner.maximum(:loaner_id) || 0
+      self.loaner_id = max_id + 1
+      StatsD.increment("loaner.id_set")
+    end
   end
 
   def assign_current_loan
-    current_loan = loans.pending.first
-    if current_loan
-      self.current_loan_id = current_loan.id
-      save!
-      StatsD.increment("loaner.current_loan_assigned")
-      current_loan.loan!
+    StatsD.measure("loaner.assign_current_loan_time") do
+      current_loan = loans.pending.first
+      if current_loan
+        self.current_loan_id = current_loan.id
+        save!
+        StatsD.increment("loaner.current_loan_assigned")
+        current_loan.loan!
+      end
     end
   end
 end
