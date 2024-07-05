@@ -17,6 +17,7 @@ module Ithelper
     config.autoload_lib(ignore: %w(assets tasks))
 
     config.console1984.protected_environments = %i[ production staging ]
+    config.console1984.ask_for_username_if_empty	= true
 
     config.autoload_lib(ignore: %w[assets tasks])
     config.assets.paths << Rails.root.join("app/assets/fonts")
