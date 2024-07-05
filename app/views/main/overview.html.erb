@@ -41,7 +41,7 @@
               <td><%= loan.reason.humanize %></td>
               <td><%= loan.borrower.flame %></td>
               <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
-              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p") %></td>
               <td>
                 <%= form_with url: checkout_loan_path(id: loan.id), method: :post, local: true do |form| %>
                   <%= form.hidden_field :loan_id, value: loan.id %>
@@ -88,7 +88,7 @@
                 </td>
                 <td><%= loaner.asset_tag %></td>
                 <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
-                <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p") %></td>
                 <td><%= loan.reason.humanize %></td>
                 <td><%= time_until_due(loan.due_date) %></td>
                 <td>

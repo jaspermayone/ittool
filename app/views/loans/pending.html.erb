@@ -47,7 +47,7 @@ t.timestamps
             <tr>
               <td><%= loan.reason.humanize %></td>
               <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
-              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p") %></td>
             </tr>
           <% end %>
         </tbody>

@@ -16,7 +16,7 @@
         <p><strong>Has Loan Out Currently:</strong> <%= @borrower.loans.any? { |loan| loan.status == 'loaned' } ? 'Yes' : 'No' %></p>
       </div>
       <div class="col-md-6">
-        <p><strong>User Created At:</strong> <%= @borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></p>
+        <p><strong>User Created At:</strong> <%= @borrower.created_at.strftime("%A, %B %e at %l:%M %p") %></p>
       </div>
       <div class="col-md-6">
         <p><strong>Historical Loan Count:</strong> <%= @borrower.loans.count %></p>
@@ -36,7 +36,7 @@
           <% @borrower.loans.sort_by(&:status).each do |loan| %>
             <tr>
               <td><%= loan.reason.humanize %></td>
-              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+              <td><%= loan.created_at.strftime("%A, %B %e at %l:%M %p") %></td>
               <td><%= loan.status.humanize %></td>
             </tr>
           <% end %>

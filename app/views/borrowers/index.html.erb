@@ -43,7 +43,7 @@
                 <td><%= borrower.email %></td>
                 <td><%= borrower.graduation_year %></td>
                 <td><%= borrower.loans.count %></td>
-                <td><%= borrower.created_at.strftime("%A, %B %e at %l:%M %p %Z") %></td>
+                <td><%= borrower.created_at.strftime("%A, %B %e at %l:%M %p") %></td>
                 <td>
                   <%= link_to 'View', borrower_path(borrower), class: 'btn btn-outline-info btn-sm' %>
                 </td>
