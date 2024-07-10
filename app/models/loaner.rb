@@ -27,18 +27,18 @@
 class AssetTagValidator < ActiveModel::Validator
   def validate(record)
     # Increment a counter for validation attempts
-    StatsD.increment("asset_tag_validation_attempts")
+    # StatsD.increment("asset_tag_validation_attempts")
 
     if record.asset_tag.blank?
       # Log and increment counter for blank asset tag errors
-      StatsD.increment("asset_tag_validation_blank_errors")
+      # StatsD.increment("asset_tag_validation_blank_errors")
       record.errors.add(:asset_tag, "can't be blank")
     elsif record.asset_tag =~ /^[0-9]{6}$/
       # Log successful validation
-      StatsD.increment("asset_tag_validation_success")
+      # StatsD.increment("asset_tag_validation_success")
     else
       # Log and increment counter for format errors
-      StatsD.increment("asset_tag_validation_format_errors")
+      # StatsD.increment("asset_tag_validation_format_errors")
       record.errors.add(:asset_tag, 'must be a 6-digit number')
     end
   end
@@ -82,7 +82,7 @@ class Loaner < ApplicationRecord
       transitions from: :available, to: :loaned
 
       after do
-        StatsD.increment("loaner.loaned")
+        # StatsD.increment("loaner.loaned")
         assign_current_loan
       end
     end
@@ -91,7 +91,7 @@ class Loaner < ApplicationRecord
       transitions from: :loaned, to: :available
 
       after do
-        StatsD.increment("loaner.returned")
+        # StatsD.increment("loaner.returned")
         self.loan.returned_at = Time.now
         self.loan.save!
       end
@@ -102,7 +102,7 @@ class Loaner < ApplicationRecord
 
       after do
         chrome_disable()
-        StatsD.increment("loaner.disabled")
+        # StatsD.increment("loaner.disabled")
       end
     end
 
@@ -111,7 +111,7 @@ class Loaner < ApplicationRecord
 
       after do
         chrome_enable()
-        StatsD.increment("loaner.enabled")
+        # StatsD.increment("loaner.enabled")
       end
     end
 
@@ -119,7 +119,7 @@ class Loaner < ApplicationRecord
       transitions from: [:available, :loaned], to: :maintenance
 
       after do
-        StatsD.increment("loaner.broken")
+        # StatsD.increment("loaner.broken")
       end
     end
 
@@ -127,13 +127,13 @@ class Loaner < ApplicationRecord
       transitions from: :maintenance, to: :available
 
       after do
-        StatsD.increment("loaner.repaired")
+        # StatsD.increment("loaner.repaired")
       end
     end
   end
 
   def log_status_change
-    StatsD.increment("loaner.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
+    # StatsD.increment("loaner.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
     Rails.logger.info "Changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
@@ -149,22 +149,22 @@ class Loaner < ApplicationRecord
   private
 
   def set_loaner_id
-    StatsD.measure("loaner.set_loaner_id_time") do
+    # StatsD.measure("loaner.set_loaner_id_time") do
       max_id = Loaner.maximum(:loaner_id) || 0
       self.loaner_id = max_id + 1
-      StatsD.increment("loaner.id_set")
-    end
+      # StatsD.increment("loaner.id_set")
+    # end
   end
 
   def assign_current_loan
-    StatsD.measure("loaner.assign_current_loan_time") do
+    # StatsD.measure("loaner.assign_current_loan_time") do
       current_loan = loans.pending.first
       if current_loan
         self.current_loan_id = current_loan.id
         save!
-        StatsD.increment("loaner.current_loan_assigned")
+        # StatsD.increment("loaner.current_loan_assigned")
         current_loan.loan!
       end
-    end
+    # end
   end
 end

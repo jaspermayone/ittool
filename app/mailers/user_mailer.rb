@@ -2,8 +2,8 @@ class UserMailer < ApplicationMailer
   default from: 'ithelper@jaspermayone.com'
 
   def notify_unreturned_after_seven_days(loan)
-    StatsD.increment("email.notify_unreturned_after_seven_days_sent")
-    StatsD.measure('email.notify_unreturned_after_seven_days_delivery_time') do
+    # StatsD.increment("email.notify_unreturned_after_seven_days_sent")
+    # StatsD.measure('email.notify_unreturned_after_seven_days_delivery_time') do
       @loan = loan
       @borrower = Borrower.find(@loan.borrower_id)
       mail(
@@ -12,12 +12,12 @@ class UserMailer < ApplicationMailer
         track_opens: "true",
         message_stream: "outbound"
       )
-    end
+    # end
   end
 
   def hello
-    StatsD.increment("email.hello_sent")
-    StatsD.measure('email.hello_delivery_time') do
+    # StatsD.increment("email.hello_sent")
+    # StatsD.measure('email.hello_delivery_time') do
       mail(
         subject: "Hello from Postmark",
         to: "me@jaspermayone.com",
@@ -26,5 +26,5 @@ class UserMailer < ApplicationMailer
         message_stream: "outbound"
       )
     end
-  end
+  # end
 end

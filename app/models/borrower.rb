@@ -14,18 +14,18 @@
 class StudentEmailValidator < ActiveModel::Validator
   def validate(record)
     # Increment a counter for validation attempts
-    StatsD.increment("email_validation_attempts")
+    # StatsD.increment("email_validation_attempts")
 
     if record.email.blank?
       # Log and increment counter for blank email errors
-      StatsD.increment("email_validation_blank_errors")
+      # StatsD.increment("email_validation_blank_errors")
       record.errors.add(:email, "can't be blank")
     elsif record.email =~ /^[a-zA-Z][a-zA-Z]+[0-9]{4}@huusd\.org$/
       # Log successful validation
-      StatsD.increment("email_validation_success")
+      # StatsD.increment("email_validation_success")
     else
       # Log and increment counter for format errors
-      StatsD.increment("email_validation_format_errors")
+      # StatsD.increment("email_validation_format_errors")
       record.errors.add(:email, 'must be in the format: first initial, last name, and 4-digit graduation year (e.g., jdoe2024@huusd.org)')
     end
   end
@@ -41,17 +41,17 @@ class Borrower < ApplicationRecord
   after_destroy :measure_destruction
 
   def full_name
-    StatsD.increment("borrower.full_name_accessed")
+    # StatsD.increment("borrower.full_name_accessed")
     "#{first_name} #{last_name}"
   end
 
   def name
-    StatsD.increment("borrower.name_accessed")
+    # StatsD.increment("borrower.name_accessed")
     "#{full_name}"
   end
 
   def flame
-    StatsD.increment("borrower.flame_accessed")
+    # StatsD.increment("borrower.flame_accessed")
     if flagged
       "🚩 #{name}"
     else
@@ -60,7 +60,7 @@ class Borrower < ApplicationRecord
   end
 
   def grade_level
-    StatsD.increment("borrower.grade_level_calculated")
+    # StatsD.increment("borrower.grade_level_calculated")
     current_month = Time.now.month
     current_year = Time.now.year
     graduation_year = self.graduation_year
@@ -93,13 +93,13 @@ class Borrower < ApplicationRecord
   private
 
   def measure_parse_email
-    StatsD.measure("borrower.parse_email_time") do
+    # StatsD.measure("borrower.parse_email_time") do
       parse_email
-    end
+    # end
   end
 
   def parse_email
-    StatsD.increment("borrower.parse_email_started")
+    # StatsD.increment("borrower.parse_email_started")
     # Split the email address before the "@" symbol
     local_part = email.split('@').first
 
@@ -111,36 +111,36 @@ class Borrower < ApplicationRecord
     self.last_name = name_part[1..-1].capitalize
     self.graduation_year = graduation_year
 
-    StatsD.increment("borrower.parse_email_completed")
+    # StatsD.increment("borrower.parse_email_completed")
   end
 
   def measure_creation
-    StatsD.measure("borrower.creation_time") do
+    # StatsD.measure("borrower.creation_time") do
       track_creation
     end
   end
 
   def track_creation
-    StatsD.increment("borrower.created")
+    # StatsD.increment("borrower.created")
   end
 
   def measure_update
-    StatsD.measure("borrower.update_time") do
+    # StatsD.measure("borrower.update_time") do
       track_update
-    end
+    # end
   end
 
   def track_update
-    StatsD.increment("borrower.updated")
+    # StatsD.increment("borrower.updated")
   end
 
   def measure_destruction
-    StatsD.measure("borrower.destruction_time") do
+    # StatsD.measure("borrower.destruction_time") do
       track_destruction
-    end
+    # end
   end
 
   def track_destruction
-    StatsD.increment("borrower.deleted")
-  end
+    # StatsD.increment("borrower.deleted")
+  # end
 end
