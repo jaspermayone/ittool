@@ -32,28 +32,28 @@ class User < ApplicationRecord
   private
 
   def track_user_creation
-    # StatsD.increment("user.created")
-    # StatsD.gauge("user.count", User.count)
+    StatsD.increment("user.created")
+    StatsD.gauge("user.count", User.count)
     Rails.logger.info "User created: #{email}"
   end
 
   def measure_user_creation
-    # StatsD.measure("user.creation_time") do
+    StatsD.measure("user.creation_time") do
       yield
     end
   end
 
   def track_user_update
-    # StatsD.increment("user.updated")
+    StatsD.increment("user.updated")
     if saved_change_to_role?
-      # StatsD.increment("user.role_changed", tags: ["from:#{saved_change_to_role[0]}", "to:#{saved_change_to_role[1]}"])
+      StatsD.increment("user.role_changed", tags: ["from:#{saved_change_to_role[0]}", "to:#{saved_change_to_role[1]}"])
     end
     Rails.logger.info "User updated: #{email}"
   end
 
   def measure_user_update
-    # StatsD.measure("user.update_time") do
-      # yield
-    # end
-  # end
+    StatsD.measure("user.update_time") do
+      yield
+    end
+  end
 end

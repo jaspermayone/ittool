@@ -33,11 +33,11 @@ class Loan < ApplicationRecord
   validates :reason, presence: true
 
   def extend
-    # StatsD.measure("loan.extend_time") do
-      # StatsD.increment("loan.extended")
+    StatsD.measure("loan.extend_time") do
+      StatsD.increment("loan.extended")
       self.due_date += 1.day
       self.save
-    # end
+    end
   end
 
   aasm :column => 'status' do
@@ -51,48 +51,48 @@ class Loan < ApplicationRecord
       transitions from: :pending, to: :out
 
       after do
-        # StatsD.measure("loan.loan_time") do
-          # StatsD.increment("loan.loaned")
+        StatsD.measure("loan.loan_time") do
+          StatsD.increment("loan.loaned")
           self.update(loaned_at: Time.now)
 
           if self.reason == "device_repair"
-            # StatsD.increment("loan.reason.device_repair")
+            StatsD.increment("loan.reason.device_repair")
 
           elsif self.reason == "charging"
-            # StatsD.increment("loan.reason.charging")
+            StatsD.increment("loan.reason.charging")
             self.update(due_date: Date.today + 2.hours)
 
           elsif self.reason == "forgot_at_home"
-            # StatsD.increment("loan.reason.forgot_at_home")
+            StatsD.increment("loan.reason.forgot_at_home")
             self.update(due_date: Date.today + 1.day)
           else
-            # StatsD.increment("loan.reason.unknown")
+            StatsD.increment("loan.reason.unknown")
             self.update(due_date: Date.today + 1.day)
           end
 
           due_date_time = self.due_date.present? ? self.due_date.to_time : nil
 
           if due_date_time.present?
-            # StatsD.measure("loan.jobs_scheduling_time") do
+            StatsD.measure("loan.jobs_scheduling_time") do
               DisableDeviceJob.set(wait_until: due_date_time).perform_later(self.id)
               # Schedule reminder jobs
               (1..7).each do |day|
-              #   # StatsD.increment("loan.reminder_job_scheduled", tags: ["day:#{day}"])
+              #   StatsD.increment("loan.reminder_job_scheduled", tags: ["day:#{day}"])
               #   RemindBorrowerToReturnLoanerJob.set(wait_until: due_date_time + day.days).perform_later(self.id)
               end
-              # StatsD.increment("loan.borrower_unreturned_after_seven_days_job_scheduled")
+              StatsD.increment("loan.borrower_unreturned_after_seven_days_job_scheduled")
               BorrowerUnreturnedAfterSevenDaysJob.set(wait_until: due_date_time + 8.days).perform_later(self.id)
-            # end
+            end
           else
             Rails.logger.warn "Due date is nil for loan #{self.id}. DisableDeviceJob will not be scheduled."
           end
-        # end
+        end
       end
     end
   end
 
   def log_status_change
-    # StatsD.increment("loan.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
+    StatsD.increment("loan.status_change", tags: ["from:#{aasm.from_state}", "to:#{aasm.to_state}", "event:#{aasm.current_event}"])
     Rails.logger.info "Changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
   end
 
