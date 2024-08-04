@@ -69,9 +69,16 @@ class LoansController < ApplicationController
       end
 
       # check if loaner is marked as active
-      if loaner.active === false
+      if loaner.is_decommissioned?
         StatsD.increment("loan_checkout_failed")
         flash[:danger] = "Loaner is not active."
+        redirect_to overview_path and return
+      end
+
+      # check if loaner status is decommissioned
+      if loaner.decommissioned?
+        StatsD.increment("loan_checkout_failed")
+        flash[:danger] = "Loaner is decommissioned."
         redirect_to overview_path and return
       end
 

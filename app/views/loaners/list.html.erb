@@ -10,7 +10,7 @@
       </div>
       <div id="fil" class="col-auto d-flex align-items-center">
         <label for="status-filter" class="mr-2 mb-0">Filter by Status:</label>
-        <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance'], 'All'), class: 'form-control form-control-sm' %>
+        <%= select_tag 'status-filter', options_for_select(['All', 'Available', 'Loaned', 'Disabled', 'Maintenance', 'Decommissioned'], 'All'), class: 'form-control form-control-sm' %>
       </div>
       <div id="fil" class="col-auto d-flex align-items-center ml-3">
         <label for="active-filter" class="mr-2 mb-0">Is Active?:</label>
@@ -43,6 +43,7 @@
                           when 'loaned' then 'loaned'
                           when 'disabled' then 'disabled'
                           when 'maintenance' then 'maintenance'
+                          when 'decommissioned' then 'decommissioned'
                           else ''
                           end %>
             <% row_class += ' inactive' unless loaner.active %>
@@ -58,15 +59,17 @@
               <td><%= loaner.loans.count %></td>
               <td><%= loaner.current_loan&.borrower&.full_name || 'N/A' %></td>
               <td>
-                <% if loaner.available? %>
-                  <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm" %>
-                  <%= link_to "Mark Broken", broken_loaner_path(loaner),  class: "btn btn-danger btn-sm" %>
-                <% elsif loaner.loaned? %>
-                  <%= link_to "Check In", return_loaner_path(loaner), class: "btn btn-success btn-sm" %>
-                <% elsif loaner.disabled? %>
-                  <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn btn-success btn-sm" %>
-                <% elsif loaner.maintenance? %>
-                  <%= link_to "Repair", repair_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                <% unless loaner.decommissioned? %>
+                  <% if loaner.available? %>
+                    <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm" %>
+                    <%= link_to "Mark Broken", broken_loaner_path(loaner), class: "btn btn-danger btn-sm" %>
+                  <% elsif loaner.loaned? %>
+                    <%= link_to "Check In", return_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                  <% elsif loaner.disabled? %>
+                    <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                  <% elsif loaner.maintenance? %>
+                    <%= link_to "Repair", repair_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                  <% end %>
                 <% end %>
               </td>
             </tr>
@@ -124,6 +127,10 @@
 
   .maintenance {
     background-color: #cce5ff;
+  }
+
+  .decommissioned {
+    background-color: #e2e3e5;
   }
 
   .inactive {

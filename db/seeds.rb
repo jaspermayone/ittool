@@ -40,9 +40,9 @@ if current_env == "development"
     { loaner_id: 8, freindly_id: 8, active: true, asset_tag: "400350", serial_number: "LI9TFQIN19248B14", status: "available" },
     { loaner_id: 9, freindly_id: 9, active: true, asset_tag: "800003", serial_number: "LI9TFQIN19108363", status: "available" },
     { loaner_id: 10, freindly_id: 10, active: true, asset_tag: "800004", serial_number: "LI9TFQIN191082DD", status: "available" },
-    { loaner_id: 11, freindly_id: 10, active: false, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "available" },
-    { loaner_id: 12, freindly_id: 9, active: false, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "available" },
-    { loaner_id: 13, freindly_id: 8, active: false, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "available" },
+    { loaner_id: 11, freindly_id: 10, active: false, asset_tag: "800005", serial_number: "LI9TFQIN191082C7", status: "decommissioned" },
+    { loaner_id: 12, freindly_id: 9, active: false, asset_tag: "101770", serial_number: "LI9TFQIN19258159", status: "decommissioned" },
+    { loaner_id: 13, freindly_id: 8, active: false, asset_tag: "800006", serial_number: "LI9TFQIN19248AC7", status: "decommissioned" },
   ]
   loaners.each { |loaner| Loaner.find_or_create_by!(loaner) }
 
