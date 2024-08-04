@@ -146,7 +146,7 @@ class LoansController < ApplicationController
       flash[:alert] = 'Loan not found.'
     end
 
-    redirect_to loans_list_out_path
+    redirect_to overview_path
   end
 
   def repair

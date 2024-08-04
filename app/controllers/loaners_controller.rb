@@ -51,7 +51,7 @@ class LoanersController < ApplicationController
     StatsD.increment("loaner_return_attempt")
     StatsD.measure('loaner.return_action') do
       if @loaner.present?
-        @loaner.mark_as_returned
+        @loaner.return!
         StatsD.increment("loaner_returned")
         redirect_to loaners_path, notice: "Asset checked in successfully."
       else
@@ -65,7 +65,7 @@ class LoanersController < ApplicationController
     StatsD.increment("loaner_enable_attempt")
     StatsD.measure('loaner.enable_action') do
       if @loaner.present?
-        @loaner.mark_as_enabled
+        @loaner.enable!
         StatsD.increment("loaner_enabled")
         redirect_to loaners_path, notice: "Asset marked as enabled successfully."
       else
@@ -93,7 +93,7 @@ class LoanersController < ApplicationController
     StatsD.increment("loaner_broken_attempt")
     StatsD.measure('loaner.broken_action') do
       if @loaner.present?
-        @loaner.mark_as_broken
+        @loaner.broken!
         StatsD.increment("loaner_broken")
         redirect_to loaners_path, notice: "Asset marked as broken successfully."
       else
@@ -107,7 +107,7 @@ class LoanersController < ApplicationController
     StatsD.increment("loaner_repair_attempt")
     StatsD.measure('loaner.repair_action') do
       if @loaner.present?
-        @loaner.mark_as_repaired
+        @loaner.repair!
         StatsD.increment("loaner_repaired")
         redirect_to loaners_path, notice: "Asset marked as repaired successfully."
       else

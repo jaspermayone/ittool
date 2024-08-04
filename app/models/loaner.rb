@@ -75,6 +75,7 @@ class Loaner < ApplicationRecord
     state :loaned, display: "Loaned"
     state :disabled, display: "Disabled"
     state :maintenance, display: "Maintenance"
+    state :decommissioned, display: "Decommissioned"
 
     after_all_transitions :log_status_change
 

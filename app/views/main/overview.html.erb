@@ -86,7 +86,7 @@
                 <td>
                   <%= link_to loaner.freindly_id, loaner_path(loaner) %>
                 </td>
-                <td><%= loaner.asset_tag %></td>
+                <td><%= link_to loaner.asset_tag, loaner_path(loaner), class: "lnk" %></td>
                 <td><%= link_to loan.borrower.email, borrower_path(loan.borrower) %></td>
                 <td><%= loan.loaned_at.strftime("%A, %B %e at %l:%M %p") %></td>
                 <td><%= loan.reason.humanize %></td>
@@ -149,6 +149,12 @@
     #bn {
       margin-right: 10px;
       margin-left: 10px;
+    }
+
+    .lnk {
+      color: #000;
+      font-style: italic;
+      text-decoration: underline;
     }
   </style>
 </div>
