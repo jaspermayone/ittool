@@ -116,7 +116,7 @@ GEM
     brakeman (6.1.2)
       racc
     builder (3.3.0)
-    bullet (7.1.6)
+    bullet (7.2.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bulma-rails (1.0.1)
@@ -330,7 +330,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.1.5)
-    minitest (5.24.0)
+    minitest (5.24.1)
     mission_control-jobs (0.2.1)
       importmap-rails
       rails (~> 7.1)
