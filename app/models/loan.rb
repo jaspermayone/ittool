@@ -89,6 +89,15 @@ class Loan < ApplicationRecord
         end
       end
     end
+
+    event :return do
+      transitions from: :out, to: :returned
+
+      after do
+        StatsD.increment("loan.returned")
+        self.update(returned_at: Time.now)
+      end
+    end
   end
 
   def log_status_change

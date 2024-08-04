@@ -92,8 +92,8 @@ class Loaner < ApplicationRecord
 
       after do
         StatsD.increment("loaner.returned")
-        self.loan.returned_at = Time.now
-        self.loan.save!
+
+        self.current_loan.return!
       end
     end
 

@@ -43,6 +43,7 @@ class LoanersController < ApplicationController
     # Measure the time taken to find and display the loaner
     StatsD.measure('loaner.show_request') do
       @loaner
+      @loans = @loaner.loans.order(loaned_at: :desc)
     end
   end
 

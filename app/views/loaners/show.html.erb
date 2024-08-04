@@ -72,7 +72,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @loaner.loans.each do |loan| %>
+          <% @loans.each do |loan| %>
             <tr>
               <td><%= loan.reason.humanize %></td>
               <td><%= loan.borrower.first_name %> <%= loan.borrower.last_name %></td>
