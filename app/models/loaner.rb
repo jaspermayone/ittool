@@ -45,8 +45,6 @@ class AssetTagValidator < ActiveModel::Validator
 end
 
 class Loaner < ApplicationRecord
-  audited
-
   include AASM
 
   before_create :set_loaner_id

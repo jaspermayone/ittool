@@ -32,7 +32,7 @@ class StudentEmailValidator < ActiveModel::Validator
 end
 
 class Borrower < ApplicationRecord
-  audited
+  include AASM
 
   has_many :loans
   validates :email, presence: true, student_email: true

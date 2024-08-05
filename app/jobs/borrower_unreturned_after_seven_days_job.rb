@@ -1,5 +1,4 @@
 class BorrowerUnreturnedAfterSevenDaysJob < ApplicationJob
-  include Audited::ActiveJob
   queue_as :default
 
   def perform(*args)

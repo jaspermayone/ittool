@@ -1,5 +1,4 @@
 class RemindBorrowerToReturnLoanerJob < ApplicationJob
-  include Audited::ActiveJob
   queue_as :default
 
   def perform(*args)

@@ -13,7 +13,8 @@
 #
 class User < ApplicationRecord
   has_secure_password
-  audited
+
+  include AASM
 
   enum role: {
     viewer: 0,
