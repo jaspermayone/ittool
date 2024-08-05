@@ -11,11 +11,15 @@
         </div>
       </div>
       <div class="col-auto">
-        <%= link_to 'Borrowers', borrowers_path, class: 'button is-small', id: "bn" %>
-        <%= link_to 'Loaners (All)', loaners_path, class: 'button is-small', id: "bn" %>
-        <%= link_to 'Loans (All)', loans_list_path, class: 'button is-small', id: "bn" %>
-        <%= link_to 'Loans (Out)', loans_list_out_path, class: 'button is-small', id: "bn" %>
-        <%= link_to 'Loans (Pending)', loans_list_pending_path, class: 'button is-small', id: "bn" %>
+        <%= link_to borrowers_path, class: 'button is-small', id: "bn" do %>
+          <i class="fa fa-id-card" style="margin-right: 8px;"></i> Borrowers
+        <% end %>
+        <%= link_to loaners_path, class: 'button is-small', id: "bn" do %>
+          <i class="fa fa-laptop" style="margin-right: 8px;"></i> Loaners
+        <% end %>
+        <%= link_to loans_list_path, class: 'button is-small', id: "bn" do %>
+            Loans
+        <% end %>
       </div>
     </div>
   </div>

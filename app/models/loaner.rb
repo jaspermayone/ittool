@@ -96,9 +96,14 @@ class Loaner < ApplicationRecord
       after do
         StatsD.increment("loaner.returned")
 
-        self.current_loan.return!
+        if self.current_loan
+          self.current_loan.return!
+        else
+          Rails.logger.warn "Attempted to return a loaner without a current loan"
+        end
       end
     end
+
 
     event :disable do
       transitions from: [:available, :loaned], to: :disabled
