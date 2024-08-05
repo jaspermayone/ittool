@@ -1,7 +1,7 @@
 class LoansController < ApplicationController
   include Authenticatable
 
-  before_action :ensure_authenticated, only: [:create, :list, :pending, :out, :checkout, :checkin]
+  before_action :ensure_authenticated, only: [:create, :list, :pending, :out, :checkout, :checkin, :cancel]
 
   def new
     StatsD.increment("loan_new_viewed")
@@ -162,6 +162,16 @@ class LoansController < ApplicationController
     if @loan
       @loan.repair!
       flash[:notice] = 'Loan successfully marked as repaired.'
+    end
+  end
+
+  def cancel
+    @loan = Loan.find(params[:id])
+
+    if @loan
+      @loan.cancel!
+      flash[:notice] = 'Loan successfully cancelled.'
+      redirect_to overview_path
     end
   end
 

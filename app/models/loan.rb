@@ -35,7 +35,14 @@ class Loan < ApplicationRecord
   def extend
     StatsD.measure("loan.extend_time") do
       StatsD.increment("loan.extended")
-      self.due_date += 1.day
+
+      # get the current date
+      current_date = Date.today
+
+      # set new_due date to the current date + 1 day
+      new_due_date = current_date + 1.day
+
+      self.due_date = new_due_date
       self.save
     end
   end
@@ -44,6 +51,7 @@ class Loan < ApplicationRecord
     state :pending, initial: true, display: "Pending"
     state :out, display: "Out"
     state :returned, display: "Returned"
+    state :canceled, display: "Canceled"
 
     after_all_transitions :log_status_change
 
@@ -98,6 +106,15 @@ class Loan < ApplicationRecord
         self.update(returned_at: Time.now)
       end
     end
+
+    event :cancel do
+      transitions from: :pending, to: :canceled
+      after do
+        StatsD.increment("loan.canceled")
+      end
+    end
+
+
   end
 
   def log_status_change

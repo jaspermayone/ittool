@@ -55,8 +55,14 @@
                     class: "input reason-input",
       pattern: "^[0-9]{6}$",
                     title: "Please enter exactly 6 digits" %>
-                  <%= form.submit "Check Out", class: "button is-small is-success" %>
+                  <%= form.submit "Check Out", class: "button is-small is-success checkout-btn" %>
                 <% end %>
+              </td>
+              <td>
+                <%= form_with url: cancel_loan_path(id: loan.id), method: :post, local: true do |form| %>
+                  <%= form.hidden_field :loan_id, value: loan.id %>
+                  <%= form.submit "X", class: "button is-small is-danger" %>
+                  <% end %>
               </td>
             </tr>
           <% end %>
@@ -124,6 +130,11 @@
   </div>
 
   <style>
+
+  .checkout-btn {
+    margin-right: -5vw;
+  }
+
     #pendingtb {
       height: 25vh;
       overflow-y: auto;
