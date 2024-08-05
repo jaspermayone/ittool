@@ -1,4 +1,7 @@
 class UserMailer < ApplicationMailer
+  has_history
+  utm_params
+
   default from: 'ithelper@jaspermayone.com'
 
   def notify_unreturned_after_seven_days(loan)

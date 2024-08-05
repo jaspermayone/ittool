@@ -82,6 +82,11 @@ GEM
     after_commit_everywhere (1.4.0)
       activerecord (>= 4.2)
       activesupport
+    ahoy_email (2.3.0)
+      actionmailer (>= 6.1)
+      addressable (>= 2.3.2)
+      nokogiri
+      safely_block (>= 0.4)
     annotate (3.2.0)
       activerecord (>= 3.2, < 8.0)
       rake (>= 10.4, < 14.0)
@@ -500,6 +505,7 @@ GEM
       racc (~> 1.5)
       sexp_processor (~> 4.16)
     rubyzip (2.3.2)
+    safely_block (0.4.0)
     sass-embedded (1.77.8-aarch64-linux-gnu)
       google-protobuf (~> 4.26)
     sass-embedded (1.77.8-aarch64-linux-musl)
@@ -630,6 +636,7 @@ PLATFORMS
 DEPENDENCIES
   aasm
   after_commit_everywhere
+  ahoy_email
   annotate
   attractor
   audited

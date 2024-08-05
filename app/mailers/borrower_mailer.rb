@@ -1,4 +1,7 @@
 class BorrowerMailer < ApplicationMailer
+  has_history
+  utm_params
+
   default from: 'ithelper@jaspermayone.com'
 
   def notify_repair_ready(borrower)

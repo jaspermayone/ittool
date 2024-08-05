@@ -124,3 +124,4 @@ gem 'google-apis-admin_directory_v1', '~> 0.57.0'
 
 gem 'audited-activejob'
 gem "audited"
+gem "ahoy_email"
