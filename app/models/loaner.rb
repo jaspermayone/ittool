@@ -45,12 +45,15 @@ class AssetTagValidator < ActiveModel::Validator
 end
 
 class Loaner < ApplicationRecord
+  audited
+
   include AASM
 
   before_create :set_loaner_id
 
   def chrome_device
-    GoogleService.new.get_chrome_device(self.serial_number)
+    # TODO: Get Google Auth working
+    # GoogleService.instance.get_chrome_device(self.serial_number)
   end
 
   def chrome_status
@@ -59,7 +62,8 @@ class Loaner < ApplicationRecord
 
   def chrome_status_update(status)
     chrome_device.status = status
-    GoogleService.new.update_chrome_device(self.serial_number, chrome_device)
+    # TODO: Get Google Auth working
+    # GoogleService.instance.update_chrome_device(self.serial_number, chrome_device)
   end
 
   def chrome_disable

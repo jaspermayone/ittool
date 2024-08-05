@@ -32,6 +32,8 @@ class StudentEmailValidator < ActiveModel::Validator
 end
 
 class Borrower < ApplicationRecord
+  audited
+
   has_many :loans
   validates :email, presence: true, student_email: true
 

@@ -7,6 +7,8 @@
 #  updated_at :datetime         not null
 #
 class Authentication < ApplicationRecord
+  audited
+
   # Track creation of an Authentication instance
   after_create :measure_creation
 

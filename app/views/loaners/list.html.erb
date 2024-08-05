@@ -61,14 +61,14 @@
               <td>
                 <% unless loaner.decommissioned? %>
                   <% if loaner.available? %>
-                    <%= link_to "Loan Device", overview_path, class: "btn btn-primary btn-sm" %>
-                    <%= link_to "Mark Broken", broken_loaner_path(loaner), class: "btn btn-danger btn-sm" %>
+                    <%= link_to "Loan Device", overview_path, class: "btn-sm btn-primary" %>
+                    <%= link_to "Mark Broken", broken_loaner_path(loaner), class: "btn-sm btn-danger" %>
                   <% elsif loaner.loaned? %>
-                    <%= link_to "Check In", return_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                    <%= link_to "Check In", return_loaner_path(loaner), class: "btn-sm btn-success" %>
                   <% elsif loaner.disabled? %>
-                    <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                    <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn-sm btn-success" %>
                   <% elsif loaner.maintenance? %>
-                    <%= link_to "Repair", repair_loaner_path(loaner), class: "btn btn-success btn-sm" %>
+                    <%= link_to "Repair", repair_loaner_path(loaner), class: "btn-sm btn-success" %>
                   <% end %>
                 <% end %>
               </td>

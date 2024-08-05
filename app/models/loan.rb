@@ -26,6 +26,7 @@
 #  loaner_id    (loaner_id => loaners.id)
 #
 class Loan < ApplicationRecord
+  audited
   include AASM
 
   belongs_to :borrower
