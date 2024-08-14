@@ -13,22 +13,12 @@
       </title>
       <meta name="description" content="" />
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta
-        http-equiv="Content-Security-Policy"
-        content="default-src 'self'; img-src https://*; child-src 'none';">
-      <meta
-        http-equiv="Strict-Transport-Security"
-        content="max-age=63072000; includeSubDomains; preload">
-      <meta http-equiv="X-Frame-Options" content="DENY">
-      <meta http-equiv="X-Content-Type-Options" content="nosniff">
-      <meta name="referrer" content="strict-origin">
       <%= yield(:head) if content_for?(:head) %>
       <%= csrf_meta_tags %>
       <%= csp_meta_tag %>
       <%= stylesheet_link_tag "application", media: "all", 'data-turbo-track': "reload" %>
       <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
       <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-      <%# TODO ~ Make less things rely on network to improve speed %>
     </head>
 
     <body>

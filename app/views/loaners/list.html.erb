@@ -65,6 +65,7 @@
                     <%= link_to "Mark Broken", broken_loaner_path(loaner), class: "btn-sm btn-danger" %>
                   <% elsif loaner.loaned? %>
                     <%= link_to "Check In", return_loaner_path(loaner), class: "btn-sm btn-success" %>
+                    <%= link_to "Disable", disable_loaner_path(loaner), class: "btn-sm btn-danger" %>
                   <% elsif loaner.disabled? %>
                     <%= link_to "Enable Device", enable_loaner_path(loaner), class: "btn-sm btn-success" %>
                   <% elsif loaner.maintenance? %>

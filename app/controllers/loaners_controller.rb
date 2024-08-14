@@ -79,7 +79,7 @@ class LoanersController < ApplicationController
     StatsD.increment("loaner_disable_attempt")
     StatsD.measure('loaner.disable_action') do
       if @loaner.present?
-        @loaner.mark_as_disabled
+        @loaner.disable!
         StatsD.increment("loaner_disabled")
         redirect_to loaners_path, notice: "Asset marked as disabled successfully."
       else

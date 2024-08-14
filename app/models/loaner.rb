@@ -51,7 +51,7 @@ class Loaner < ApplicationRecord
 
   def chrome_device
     # TODO: Get Google Auth working
-    # GoogleService.instance.get_chrome_device(self.serial_number)
+    GoogleService.instance.get_chrome_device(self.serial_number)
   end
 
   def chrome_status
@@ -61,7 +61,7 @@ class Loaner < ApplicationRecord
   def chrome_status_update(status)
     chrome_device.status = status
     # TODO: Get Google Auth working
-    # GoogleService.instance.update_chrome_device(self.serial_number, chrome_device)
+    GoogleService.instance.update_chrome_device(self.serial_number, chrome_device)
   end
 
   def chrome_disable
