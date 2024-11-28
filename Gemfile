@@ -120,7 +120,7 @@ gem 'aasm'
 gem 'csv'
 gem 'postmark-rails'
 gem "statsd-instrument", "~> 3.8" # For reporting to jasper's Grafana
-gem 'google-apis-admin_directory_v1', '~> 0.57.0'
+gem 'google-apis-admin_directory_v1', '~> 0.58.0'
 
 gem 'audited-activejob'
 gem "audited"
