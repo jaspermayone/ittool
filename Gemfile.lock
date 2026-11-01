@@ -115,6 +115,22 @@ GEM
       rinku
       rouge
       turbo-rails
+    aws-eventstream (1.3.0)
+    aws-partitions (1.1009.0)
+    aws-sdk-core (3.213.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      jmespath (~> 1, >= 1.6.1)
+    aws-sdk-kms (1.95.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.171.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.10.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     backport (1.2.0)
     base64 (0.2.0)
     bcrypt (3.1.20)
@@ -210,6 +226,8 @@ GEM
       thor (>= 0.19, < 2)
     descriptive_statistics (2.5.1)
     diff-lcs (1.5.1)
+    dockerfile-rails (1.6.24)
+      rails (>= 3.0.0)
     drb (2.2.1)
     dry-initializer (3.1.1)
     e2mmap (0.1.0)
@@ -224,12 +242,7 @@ GEM
     faraday-net_http (3.1.1)
       net-http
     fattr (2.4.0)
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-aarch64-linux-musl)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
-    ffi (1.17.0-x86_64-linux-musl)
+    ffi (1.17.0)
     flog (4.8.0)
       path_expander (~> 1.0)
       ruby_parser (~> 3.1, > 3.1.0)
@@ -258,16 +271,7 @@ GEM
       retriable (>= 2.0, < 4.a)
     google-cloud-env (2.1.1)
       faraday (>= 1.0, < 3.a)
-    google-protobuf (4.27.3-aarch64-linux)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.27.3-arm64-darwin)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.27.3-x86_64-darwin)
-      bigdecimal
-      rake (>= 13)
-    google-protobuf (4.27.3-x86_64-linux)
+    google-protobuf (4.27.3)
       bigdecimal
       rake (>= 13)
     googleauth (1.11.0)
@@ -303,6 +307,7 @@ GEM
     jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jmespath (1.6.2)
     json (2.7.2)
     jwt (2.8.2)
       base64
@@ -345,6 +350,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.8)
     minitest (5.24.1)
     mission_control-jobs (0.2.1)
       importmap-rails
@@ -371,13 +377,8 @@ GEM
     next_rails (1.3.0)
       colorize (>= 0.8.1)
     nio4r (2.7.3)
-    nokogiri (1.16.7-aarch64-linux)
-      racc (~> 1.4)
-    nokogiri (1.16.7-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.16.7-x86_64-linux)
+    nokogiri (1.16.7)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     octokit (9.1.0)
       faraday (>= 1, < 3)
@@ -583,10 +584,8 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (1.7.3-aarch64-linux)
-    sqlite3 (1.7.3-arm64-darwin)
-    sqlite3 (1.7.3-x86_64-darwin)
-    sqlite3 (1.7.3-x86_64-linux)
+    sqlite3 (1.7.3)
+      mini_portile2 (~> 2.8.0)
     stackprof (0.2.26)
     statsd-instrument (3.8.0)
     stimulus-rails (1.3.3)
@@ -644,6 +643,7 @@ DEPENDENCIES
   audited
   audited-activejob
   audits1984
+  aws-sdk-s3 (~> 1.171)
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
@@ -658,6 +658,7 @@ DEPENDENCIES
   debug
   debugbar
   derailed_benchmarks
+  dockerfile-rails (>= 1.6)
   font-awesome-sass (~> 6.5.2)
   google-apis-admin_directory_v1 (~> 0.57.0)
   groupdate (~> 6.4)
@@ -695,7 +696,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.3.4p94
+   ruby 3.4.1p0
 
 BUNDLED WITH
    2.5.11

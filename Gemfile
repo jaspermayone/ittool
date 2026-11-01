@@ -127,3 +127,7 @@ gem "audited"
 gem "ahoy_email"
 
 gem "groupdate", "~> 6.4"
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
+
+gem "aws-sdk-s3", "~> 1.171", :require => false
